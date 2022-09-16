@@ -10,6 +10,9 @@
 
 #include <iostream>
 
+// Particle test
+#include "Particle.h"
+
 
 
 using namespace physx;
@@ -28,6 +31,8 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+
+Particle* gParticle = NULL;
 
 
 // Initialize physics engine
@@ -53,6 +58,9 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
+
+	// Particle's creation
+	gParticle = new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1);
 	}
 
 
@@ -62,6 +70,8 @@ void initPhysics(bool interactive)
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
+
+	gParticle->integrate(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
@@ -83,6 +93,8 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+
+	delete gParticle;
 	}
 
 // Function called when a key is pressed
