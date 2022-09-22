@@ -3,16 +3,18 @@
 #include <PxPhysicsAPI.h>
 
 #include <vector>
+#include <string>
 
 #include "core.hpp"
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
-// Particle test
-#include "Particle.h"
-
+// Scene
+#include "Scene.h"
 
 
 using namespace physx;
@@ -32,7 +34,31 @@ PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
-Particle* gParticle = NULL;
+Scene* mSM = nullptr;
+
+// FPS
+clock_t startTime = -1;
+double fps;
+
+void updateWindowName(clock_t endTime) {
+	clock_t deltaTime = endTime - startTime;
+
+	fps++;
+
+	// Display every second
+	if (deltaTime > 1000) {
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(2) << fps;
+		std::string s = stream.str();
+
+		std::string name1 = "Simulacion Fisica Videojuegos (FPS: " + s + ")";
+
+		glutSetWindowTitle(name1.c_str());
+
+		fps = 0;
+		startTime = endTime;
+	}
+}
 
 
 // Initialize physics engine
@@ -59,8 +85,8 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	// Particle's creation
-	gParticle = new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1);
+	// Scene Creation
+	mSM = new Scene();
 	}
 
 
@@ -69,12 +95,21 @@ void initPhysics(bool interactive)
 // t: time passed since last call in milliseconds
 void stepPhysics(bool interactive, double t)
 {
+	if (startTime == -1)
+		startTime = clock();
+
 	PX_UNUSED(interactive);
 
-	gParticle->integrate(t);
+	mSM->Update(t);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	clock_t endTime = clock();
+
+	// std::cout << "begin: " << beginFrame << " /// last: " << endFrame << "\n";
+
+	updateWindowName(endTime);
 }
 
 // Function to clean data
@@ -94,7 +129,7 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	delete gParticle;
+	mSM->ClearScene();
 	}
 
 // Function called when a key is pressed
@@ -120,6 +155,7 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
 }
+
 
 
 int main(int, const char*const*)

@@ -12,6 +12,9 @@ private:
 	physx::PxTransform mTransform;
 	physx::PxVec3 mPos;
 
+	// Particle's mass
+	float mInverseMass;
+
 	// Particle's velocity & acceleration
 	physx::PxVec3 mVelocity;
 	physx::PxVec3 mAcceleration;
