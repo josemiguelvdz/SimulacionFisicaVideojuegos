@@ -17,6 +17,7 @@ private:
 
 	// Particle's velocity & acceleration
 	physx::PxVec3 mVelocity;
+	physx::PxVec3 mInitialVelocity;
 	physx::PxVec3 mAcceleration;
 
 	// Damping property
@@ -30,7 +31,7 @@ private:
 
 public:
 	// Constructor
-	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping);
+	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale);
 	~Particle();
 
 	// Integration

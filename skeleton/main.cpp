@@ -138,17 +138,15 @@ void keyPress(unsigned char key, const PxTransform& camera)
 {
 	PX_UNUSED(camera);
 
-	switch(toupper(key))
-	{
-	//case 'B': break;
-	//case ' ':	break;
-	case ' ':
-	{
-		break;
-	}
-	default:
+	toupper(key);
+
+	if (key >= 48 && key < 57) {
 		mSM->LoadScene((int)key - 48);
-		break;
+	}
+	else {
+		if (key == 'q') {
+			mSM->ShootBullet();
+		}
 	}
 }
 

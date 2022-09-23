@@ -26,5 +26,7 @@ public:
 	Particle* GetParticle(int id);
 	bool RemoveParticle(int id);
 	void ClearScene();
+
+	void ShootBullet();
 };
 
