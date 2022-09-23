@@ -21,6 +21,7 @@ void Scene::LoadScene(int newID)
 		AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, {0, 0, 0}, 1));
 		break;
 	case 1:
+		AddPlane(new Plane({ 0, 0, 0 }));
 		break;
 	default:
 		break;
@@ -71,4 +72,13 @@ void Scene::ClearScene()
 		delete p;
 
 	mParticles.clear();
+}
+
+int Scene::AddPlane(Plane* p)
+{
+	if (p != nullptr) {
+		mPlanes.push_back(p);
+		return mPlanes.size() - 1;
+	}
+	else return -1;
 }

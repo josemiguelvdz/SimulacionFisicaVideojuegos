@@ -44,9 +44,10 @@ void updateWindowName(clock_t endTime) {
 	clock_t deltaTime = endTime - startTime;
 
 	fps++;
-
 	// Display every second
 	if (deltaTime > 1000) {
+		fps--;
+
 		std::stringstream stream;
 		stream << std::fixed << std::setprecision(2) << fps;
 		std::string s = stream.str();
@@ -146,6 +147,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	}
 	default:
+		mSM->LoadScene((int)key - 48);
 		break;
 	}
 }

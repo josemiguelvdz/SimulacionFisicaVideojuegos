@@ -1,6 +1,6 @@
-#include "Particle.h"
+#include "Projectile.h"
 
-Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping)
+Projectile::Projectile(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping)
 {
 	mPos = pos;
 	mVelocity = vel;
@@ -12,10 +12,10 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, doub
 
 	mTransform = physx::PxTransform(pos.x, pos.y, pos.z);
 	mShape = CreateShape(physx::PxSphereGeometry(1.0));
-	mRenderItem = new RenderItem(mShape, &mTransform, {0.5, 0.5, 1, 1});
+	mRenderItem = new RenderItem(mShape, &mTransform, { 0.5, 0.5, 1, 1 });
 }
 
-Particle::~Particle()
+Projectile::~Projectile()
 {
 	DeregisterRenderItem(mRenderItem);
 	// mShape->release();
@@ -24,7 +24,7 @@ Particle::~Particle()
 	// delete mRenderItem;
 }
 
-void Particle::integrate(float t)
+void Projectile::integrate(float t)
 {
 	// Trivial  case, infinite mass --> do nothing
 	if (mInverseMass <= 0.0f)
@@ -34,7 +34,7 @@ void Particle::integrate(float t)
 	mTransform = physx::PxTransform(mTransform.p.x + mVelocity.x * t, mTransform.p.y + mVelocity.y * t, mTransform.p.z + mVelocity.z * t);
 
 	// Update linear  velocity
-	 mVelocity += mAcceleration * t;
+	mVelocity += mAcceleration * t;
 
 	// Impose drag (damping)
 	mVelocity *= powf(mDamping, t);
