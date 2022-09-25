@@ -20,13 +20,13 @@ void Scene::LoadScene(int newID)
 
 	switch (mID) {
 	case 0:
-		AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, {0, 0, 0}, 1, 1));
+		AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, {0, 0, 0}, 1, 1, {0,0,1,1}, 0, true));
 		break;
 	case 1:
 		// Escena de simulación de proyectiles
 		AddPlane(new Plane({ 0, 0, 0 }));
 
-		diana = new Particle({ -100, 50, -100 }, { 0, 0, 0 }, { 0, 0, 0 }, 0, 10);
+		diana = new Particle({ -100, 50, -100 }, { 0, 0, 0 }, { 0, 0, 0 }, 0, 10, {0, 0, 1, 1}, 0, true);
 		AddParticle(diana);
 		break;
 	default:
@@ -36,8 +36,18 @@ void Scene::LoadScene(int newID)
 
 void Scene::Update(double t)
 {
-	for (auto p : mParticles)
-		p->integrate(t);
+	int cont = 0;
+	for (auto p : mParticles) {
+		if (!p->isAlive()) {
+			RemoveParticle(cont);
+			cont--;
+		}
+		else
+			p->integrate(t);
+
+		cont++;
+	}
+		
 }
 
 int Scene::AddParticle(Particle* p)
@@ -67,7 +77,8 @@ bool Scene::RemoveParticle(int id)
 		it++;
 		i++;
 	}
-	
+
+	delete mParticles[i];
 	mParticles.erase(it);
 	return true;
 }
@@ -98,6 +109,32 @@ void Scene::ShootBullet(){
 
 	physx::PxVec3 test = iniDir.getNormalized();
 
-	AddParticle(new Particle(iniPos, iniDir.getNormalized() * iniVel, {0, -3, 0}, 1, 3));
+	AddParticle(new Particle(iniPos, iniDir.getNormalized() * iniVel, {0, -3, 0}, 1, 3, {1, 1, 0, 1}, 5000, false));
+
+}
+
+void Scene::ShootHeavyBullet() {
+	Snippets::Camera* mCamera = GetCamera();
+	physx::PxVec3 iniPos = mCamera->getTransform().p;
+	physx::PxVec3 iniDir = mCamera->getDir();
+
+	int iniVel = 80;
+
+	physx::PxVec3 test = iniDir.getNormalized();
+
+	AddParticle(new Particle(iniPos, iniDir.getNormalized() * iniVel, { 0, -130, 0 }, 1, 10, { 1, 1, 1, 1 }, 5000, false));
+
+}
+
+void Scene::ShootLightBullet() {
+	Snippets::Camera* mCamera = GetCamera();
+	physx::PxVec3 iniPos = mCamera->getTransform().p;
+	physx::PxVec3 iniDir = mCamera->getDir();
+
+	int iniVel = 100;
+
+	physx::PxVec3 test = iniDir.getNormalized();
+
+	AddParticle(new Particle(iniPos, iniDir.getNormalized() * iniVel, { 0, 5, 0 }, 1, 2, { .5, 0, 1, 1 }, 5000, false));
 
 }

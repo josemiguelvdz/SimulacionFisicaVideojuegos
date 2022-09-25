@@ -1,6 +1,7 @@
 #include "Particle.h"
+#include <iomanip>
 
-Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale)
+Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle)
 {
 	mPos = pos;
 	mVelocity = vel;
@@ -12,7 +13,12 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, doub
 
 	mTransform = physx::PxTransform(pos.x, pos.y, pos.z);
 	mShape = CreateShape(physx::PxSphereGeometry(scale));
-	mRenderItem = new RenderItem(mShape, &mTransform, {0.5, 0.5, 1, 1});
+	mRenderItem = new RenderItem(mShape, &mTransform, color);
+
+	mMaxLifeTime = clock() + lifeTime;
+
+	mAlive = true;
+	mStaticParticle = staticParticle;
 }
 
 Particle::~Particle()
@@ -38,4 +44,15 @@ void Particle::integrate(float t)
 
 	// Impose drag (damping)
 	mVelocity *= powf(mDamping, t);
+
+	// Life Time
+	mCurrLifeTime = clock();
+
+
+	if (!mStaticParticle && mCurrLifeTime > mMaxLifeTime)
+		mAlive = false;
+}
+
+bool Particle::isAlive() {
+	return mAlive;
 }

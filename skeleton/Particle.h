@@ -29,12 +29,22 @@ private:
 	// RenderItem pointer
 	RenderItem* mRenderItem;
 
+	// Particle's LifeTime
+	float mMaxLifeTime;
+	float mCurrLifeTime;
+	bool mAlive;
+
+	bool mStaticParticle;
+
 public:
 	// Constructor
-	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale);
+	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle);
 	~Particle();
 
 	// Integration
 	void integrate(float t);
+
+	// Return mAlive
+	bool isAlive();
 };
 

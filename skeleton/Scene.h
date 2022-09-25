@@ -28,5 +28,7 @@ public:
 	void ClearScene();
 
 	void ShootBullet();
+	void ShootHeavyBullet();
+	void ShootLightBullet();
 };
 

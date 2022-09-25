@@ -147,6 +147,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (key == 'q') {
 			mSM->ShootBullet();
 		}
+		if (key == 'r') {
+			mSM->ShootHeavyBullet();
+		}
+		if (key == 'e') {
+			mSM->ShootLightBullet();
+		}
 	}
 }
 
