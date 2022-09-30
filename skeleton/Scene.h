@@ -1,19 +1,14 @@
 #pragma once
 
 #include "Particle.h"
-#include "Projectile.h"
 #include "Plane.h"
+
 #include <vector>
 
 using namespace std;
 
 class Scene
 {
-	int mID = 0;
-	vector<Particle*> mParticles;
-	vector<Projectile*> mProjectiles;
-	vector<Plane*> mPlanes;
-
 public:
 	Scene();
 	~Scene();
@@ -30,5 +25,25 @@ public:
 	void ShootBullet();
 	void ShootHeavyBullet();
 	void ShootLightBullet();
+
+private:
+
+	int mID = 0;
+	double mGravity = -9.8;
+	vector<Particle*> mParticles;
+	vector<Plane*> mPlanes;
+
+	struct Projectile {
+		double inverseMass; //inversa de la masa
+		double speed; //velocidad
+		double gravity; //gravedad
+		double initialHeight; //altura inicial
+		double angle;
+		double variation;
+	};
+
+
+	Projectile Simulate(double simulatedVel, Projectile real);
+
 };
 

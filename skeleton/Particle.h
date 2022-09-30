@@ -26,6 +26,9 @@ private:
 	// Particle's shape
 	physx::PxShape* mShape;
 
+	// Particle's color
+	physx::PxVec4 mColor;
+
 	// RenderItem pointer
 	RenderItem* mRenderItem;
 
@@ -39,6 +42,8 @@ private:
 public:
 	// Constructor
 	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle);
+
+	Particle(physx::PxVec3 pos, physx::PxVec3 vel, bool staticParticle);
 	~Particle();
 
 	// Integration
@@ -46,5 +51,13 @@ public:
 
 	// Return mAlive
 	bool isAlive();
+
+	// Modify params
+	Particle* Particle::setVel(physx::PxVec3 vel);
+	Particle* Particle::setAcc(physx::PxVec3 acc);
+	Particle* Particle::setDamp(double damp);
+	Particle* Particle::setIMass(double iMass);
+	Particle* Particle::setColor(physx::PxVec4 color);
+	Particle* Particle::setShape(physx::PxShape* shape);
 };
 
