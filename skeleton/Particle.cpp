@@ -64,19 +64,11 @@ void Particle::integrate(float t)
 	// Impose drag (damping)
 	mVelocity *= powf(mDamping, t);
 
-	
-	// test
-	//mTransform.p += mVelocity * t;
-	//mVelocity += mAcceleration * t;
-	//mVelocity *= pow(mDamping, t);
-
 	// Life Time
 	mCurrLifeTime = clock();
 
 	if (!mStaticParticle && mCurrLifeTime > mMaxLifeTime)
 		mAlive = false;
-
-	std::cout << "Particle's Vel x: " << mVelocity.y << "\n";
 }
 
 bool Particle::isAlive() {

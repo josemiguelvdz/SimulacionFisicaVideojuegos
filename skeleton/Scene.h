@@ -38,8 +38,6 @@ private:
 		double speed; //velocidad
 		double gravity; //gravedad
 		double initialHeight; //altura inicial
-		double angle;
-		double variation;
 	};
 
 
