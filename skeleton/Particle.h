@@ -61,5 +61,8 @@ public:
 	Particle* Particle::setShape(physx::PxShape* shape);
 	Particle* Particle::setLifeTime(float lifeTime);
 	Particle* Particle::setAlpha(float alpha);
+
+	// Particle System
+	virtual Particle* clone() const;
 };
 
