@@ -105,6 +105,19 @@ Particle* Particle::setShape(physx::PxShape* shape)
 	return this;
 }
 
+Particle* Particle::setLifeTime(float lifeTime)
+{
+	mCurrLifeTime = clock();
+	mMaxLifeTime = mCurrLifeTime + lifeTime;
+	return this;
+}
+
+Particle* Particle::setAlpha(float alpha)
+{
+	
+	return this;
+}
+
 Particle* Particle::setColor(physx::PxVec4 color)
 {
 	mColor = color;

@@ -59,5 +59,7 @@ public:
 	Particle* Particle::setIMass(double iMass);
 	Particle* Particle::setColor(physx::PxVec4 color);
 	Particle* Particle::setShape(physx::PxShape* shape);
+	Particle* Particle::setLifeTime(float lifeTime);
+	Particle* Particle::setAlpha(float alpha);
 };
 
