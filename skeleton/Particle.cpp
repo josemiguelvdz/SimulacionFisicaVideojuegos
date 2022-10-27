@@ -40,6 +40,27 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, bool staticParticle)
 	mRenderItem = new RenderItem(mShape, &mTransform, mColor);
 }
 
+Particle::Particle(Particle* p)
+{
+	mPos = p->mPos;
+	mVelocity = p->mVelocity;
+	mAcceleration = p->mAcceleration;
+
+	mDamping = p->mDamping;
+
+	mInverseMass = p->mInverseMass;
+
+	mColor = p->mColor;
+
+	mTransform = physx::PxTransform(mPos);
+	mShape = p->mShape;
+	mRenderItem = new RenderItem(mShape, &mTransform, mColor);
+
+	mMaxLifeTime = clock() + p->mMaxLifeTime;
+	mAlive = true;
+	mStaticParticle = p->mStaticParticle;
+}
+
 Particle::~Particle()
 {
 	DeregisterRenderItem(mRenderItem);
@@ -80,9 +101,25 @@ Particle* Particle::setVel(physx::PxVec3 vel)
 	mVelocity = vel;
 	return this;
 }
+
+physx::PxVec3 Particle::getVel() {
+	return mVelocity;
+}
+
+void Particle::setName(std::string newName) {
+	mName = newName;
+}
+
 Particle* Particle::setAcc(physx::PxVec3 acc)
 {
 	mAcceleration = acc;
+	return this;
+}
+
+Particle* Particle::setPos(physx::PxVec3 pos)
+{
+	mPos = pos;
+	mTransform = physx::PxTransform(mPos);
 	return this;
 }
 
@@ -124,4 +161,11 @@ Particle* Particle::setColor(physx::PxVec4 color)
 	mRenderItem->color = color;
 	return this;
 }
+
+//Particle* Particle::setScale(float scale)
+//{
+//	mScale
+//	mRenderItem->color = color;
+//	return this;
+//}
 

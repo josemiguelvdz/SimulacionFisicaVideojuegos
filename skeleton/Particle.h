@@ -4,6 +4,8 @@
 #include "PxPhysicsAPI.h"
 #include "RenderUtils.hpp"
 
+#include <string>
+
 class Particle
 {
 private:
@@ -44,6 +46,8 @@ public:
 	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle);
 
 	Particle(physx::PxVec3 pos, physx::PxVec3 vel, bool staticParticle);
+	Particle(Particle* p);
+
 	~Particle();
 
 	// Integration
@@ -52,17 +56,25 @@ public:
 	// Return mAlive
 	bool isAlive();
 
-	// Modify params
-	Particle* Particle::setVel(physx::PxVec3 vel);
-	Particle* Particle::setAcc(physx::PxVec3 acc);
-	Particle* Particle::setDamp(double damp);
-	Particle* Particle::setIMass(double iMass);
-	Particle* Particle::setColor(physx::PxVec4 color);
-	Particle* Particle::setShape(physx::PxShape* shape);
-	Particle* Particle::setLifeTime(float lifeTime);
-	Particle* Particle::setAlpha(float alpha);
+	// string name
+	std::string mName;
+	void setName(std::string newName);
 
-	// Particle System
-	virtual Particle* clone() const;
+	// Modify params
+	Particle* setVel(physx::PxVec3 vel);
+	physx::PxVec3 getVel();
+
+
+	Particle* setPos(physx::PxVec3 pos);
+
+	Particle* setAcc(physx::PxVec3 acc);
+	Particle* setDamp(double damp);
+	Particle* setIMass(double iMass);
+	Particle* setColor(physx::PxVec4 color);
+	Particle* setShape(physx::PxShape* shape);
+	Particle* setLifeTime(float lifeTime);
+	Particle* setAlpha(float alpha);
+	Particle* setScale(float scale);
+
 };
 

@@ -16,6 +16,9 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
+    <ClCompile Include="NieveParticleGenerator.cpp" />
+    <ClCompile Include="SpaceParticleGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -34,7 +37,8 @@
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="UniformParticleGenerator.h" />
     <ClInclude Include="GaussianParticleGenerator.h" />
-    <ClInclude Include="BatmanFireworkEquation.h" />
+    <ClInclude Include="NieveParticleGenerator.h" />
+    <ClInclude Include="SpaceParticleGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

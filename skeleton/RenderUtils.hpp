@@ -50,6 +50,7 @@ public:
 		}
 	}
 
+
 public:
 	physx::PxShape* shape;
 	const physx::PxTransform* transform;

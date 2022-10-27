@@ -31,6 +31,62 @@ void Scene::LoadScene(int newID)
 		diana = new Particle({ 40, 50, 40 }, { 0, 0, 0 }, { 0, 0, 0 }, 0, 1, {0, 0, 1, 1}, 0, true);
 		AddParticle(diana);
 		break;
+	case 2:
+		{
+		AddPlane(new Plane({ 40, 40, 40 }));
+
+		pSystem = new ParticleSystem();
+		GaussianParticleGenerator* gauss = new GaussianParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0), 0, 1);
+		gauss->setMeanParticles(5);
+		gauss->setParticle(new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, -30, 0 }, 1, 0.6, {0,0,1,1}, 2000, false));
+		pSystem->addParticleGenerator(gauss);
+		break;
+		}
+	case 3:
+		{
+			AddPlane(new Plane({ 40, 40, 40 }));
+
+			pSystem = new ParticleSystem();
+			UniformParticleGenerator* uniform = new UniformParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0));
+			uniform->setMeanParticles(5);
+			uniform->setParticle(new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, -30, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false));
+			pSystem->addParticleGenerator(uniform);
+	
+		}
+		break;
+	case 4:
+		{
+			AddPlane(new Plane({ 40, 40, 40 }));
+
+			pSystem = new ParticleSystem();
+			NieveParticleGenerator* humo = new NieveParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(5, -3, 5), 0, 1);
+			humo->setMeanParticles(10);
+			humo->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.5, 0 }, 1, 0.5, { 0,0,1,1 }, 10000, false));
+			pSystem->addParticleGenerator(humo);
+		}
+		break;
+	case 5:
+		{
+			// Snippets::backgroundColor = physx::PxVec3(0, 0, 0);
+			// AddPlane(new Plane({ 40, 40, 40 }));
+
+			pSystem = new ParticleSystem();
+			SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(0, 0, 0));
+			stars->setMeanParticles(5);
+			stars->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 4000, false));
+
+			SpaceParticleGenerator* stars2 = new SpaceParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(0, 0, 0));
+			stars2->setMeanParticles(1);
+			stars2->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 1, { .4 ,0,.8,1 }, 5000, false));
+
+			pSystem->addParticleGenerator(stars);
+			pSystem->addParticleGenerator(stars2);
+
+			Particle* planet1 = new Particle({ 3000, 0, 400 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 100, { 1 ,1,.2, 1 }, 0, true);
+			planet1->setName("Sol");
+			AddParticle(planet1);
+
+		}
 	default:
 		break;
 	}
@@ -38,17 +94,79 @@ void Scene::LoadScene(int newID)
 
 void Scene::Update(double t)
 {
+	static double suma = 1.0;
+	static double color_r = 1;
+	static double color_g = 1;
+	static double color_b = .2;
+
+	static bool expansion = false;
+	static bool contraccion = false;
+
 	int cont = 0;
 	for (auto p : mParticles) {
 		if (!p->isAlive()) {
 			RemoveParticle(cont);
 			cont--;
 		}
-		else
+		else {
 			p->integrate(t);
+			
+			if (p->mName == "Sol") {
+				p->setShape(CreateShape(physx::PxSphereGeometry(suma)));
+				p->setColor(physx::PxVec4(color_r, color_g, color_b, 1));
+				// 
+				suma += 0.05;
+
+				color_g -= 0.0001;
+				if (color_g < 0)
+					color_g = 0;
+				color_b -= 0.00001;
+				if (color_b < 0)
+					color_b = 0;
+
+				if (suma >= 600 && !contraccion) {
+					contraccion = true;
+				}
+
+				if(contraccion && !expansion){
+					suma -= 30;
+
+					color_b += 0.01;
+					if (color_b > 1)
+						color_b = 1;
+					color_r -= 0.01;
+					if (color_r < 0)
+						color_r = 0;
+
+					if (suma < 10 && !expansion) {
+						expansion = true;
+					}
+				}
+
+				if (expansion) {
+					suma += 30;
+
+					color_b += 0.2;
+					color_r += 0.2;
+					color_g += 0.2;
+
+					if (color_b > 1)
+						color_b = 1;
+					if (color_g > 1)
+						color_g = 1;
+					if (color_r > 1)
+						color_r = 1;
+				}
+					
+			}
+			
+		}
 
 		cont++;
 	}
+
+	if(pSystem != nullptr)
+		pSystem->Integrate(t);
 		
 }
 
@@ -99,7 +217,11 @@ void Scene::ClearScene()
 	for (auto p : mParticles)
 		delete p;
 
+	for (auto p : mPlanes)
+		delete p;
+
 	mParticles.clear();
+	mPlanes.clear();
 }
 
 void Scene::ShootBullet(){

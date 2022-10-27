@@ -2,6 +2,11 @@
 
 #include "Particle.h"
 #include "Plane.h"
+#include "ParticleSystem.h"
+#include "GaussianParticleGenerator.h"
+#include "UniformParticleGenerator.h"
+#include "NieveParticleGenerator.h"
+#include "SpaceParticleGenerator.h"
 
 #include <vector>
 
@@ -42,6 +47,8 @@ private:
 
 
 	Projectile Simulate(double simulatedVel, Projectile real);
+
+	ParticleSystem* pSystem = nullptr;
 
 };
 

@@ -1,10 +1,41 @@
 #include "ParticleSystem.h"
 
-ParticleSystem::ParticleSystem(int meanParticles, float varParts)
+#include <iostream>
+
+ParticleSystem::ParticleSystem()
 {
-	mMeanParticles = meanParticles;
-	mVarParts = varParts;
+}
 
+void ParticleSystem::Integrate(double t)
+{
+	static int contador = 0;
+	for (auto g : mParticleGenerators) {
+		std::list<Particle*> test = g->generateParticles();
+		for (auto i : test) {
+			mParticles.push_back(i);
+			// contador++;
+			// std::cout << "contador: " << contador << "\n";
+		}
+			
+	}
+	
+	std::list<Particle*>::iterator it = mParticles.begin();
 
-	mNumParticles = mMeanParticles + rand() * mVarParts;
+	while (it != mParticles.end())
+	{
+		if (!(*it)->isAlive()) {
+			delete *it;
+			it = mParticles.erase(it);
+		}
+		else {
+			(*it)->integrate(t);
+			it++;
+		}
+			
+	}
+}
+
+void ParticleSystem::addParticleGenerator(ParticleGenerator* pGenerator)
+{
+	mParticleGenerators.push_back(pGenerator);
 }

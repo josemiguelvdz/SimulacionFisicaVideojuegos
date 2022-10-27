@@ -6,10 +6,12 @@
 class ParticleSystem
 {
 public:
-	ParticleSystem(int meanParticles, float varParts);
+	ParticleSystem();
 
-	void update(double t);
+	void Integrate(double t);
 	ParticleGenerator* getParticleGenerator(std::string name);
+	void addParticleGenerator(ParticleGenerator* pGenerator);
+
 	
 	// Fireworks
 	// void generateFireworkSytem();
@@ -24,6 +26,8 @@ private:
 	// Particles
 	std::list<Particle*> mParticles;
 	std::list<ParticleGenerator*> mParticleGenerators;
+
+	bool RemoveParticle(int id);
 
 };
 

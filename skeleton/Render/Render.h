@@ -46,8 +46,11 @@
 #error platform not supported.
 #endif
 
+
+
 namespace Snippets
 {
+
 void setupDefaultWindow(const char* name);
 void setupDefaultRenderState();
 
