@@ -153,6 +153,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (key == 'e') {
 			mSM->ShootLightBullet();
 		}
+		if (key == 'f') {
+			mSM->CreateFireWork();
+		}
 	}
 }
 

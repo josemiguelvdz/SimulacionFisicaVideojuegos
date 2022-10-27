@@ -41,6 +41,8 @@ private:
 
 	bool mStaticParticle;
 
+	int mGenId;
+
 public:
 	// Constructor
 	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle);
@@ -64,8 +66,12 @@ public:
 	Particle* setVel(physx::PxVec3 vel);
 	physx::PxVec3 getVel();
 
+	void addGen() { mGenId++; };
+	int getGen() { return mGenId; };
+	void updateGen(int newGen) { mGenId = newGen; };
 
 	Particle* setPos(physx::PxVec3 pos);
+	physx::PxVec3 getPos();
 
 	Particle* setAcc(physx::PxVec3 acc);
 	Particle* setDamp(double damp);

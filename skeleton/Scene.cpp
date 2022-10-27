@@ -87,6 +87,9 @@ void Scene::LoadScene(int newID)
 			AddParticle(planet1);
 
 		}
+	case 6:
+		fw = new FireWorkParticleGenerator(physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0));
+		break;
 	default:
 		break;
 	}
@@ -167,6 +170,9 @@ void Scene::Update(double t)
 
 	if(pSystem != nullptr)
 		pSystem->Integrate(t);
+
+	if(fw != nullptr)
+		fw->integrate(t);
 		
 }
 
@@ -358,4 +364,19 @@ Scene::Projectile Scene::Simulate(double simVel, Projectile rProj)
 		sProj.gravity = 0;
 
 	return sProj;
+}
+
+
+void Scene::CreateFireWork() {
+	// cholin si ves esto eres wekereke
+	int max = 2;
+	int min = 0;
+	int x = rand() % (max - min + 1) + min;
+	int y = rand() % (max - min + 1) + min;
+
+	Particle* p = new Particle({ 30, 20, 30 }, { (float)x, 10, (float)y }, { 0, 40, 0 }, 1, 0.5, { 1 ,0, 0, 1 }, 1000, false);
+
+	if(fw != nullptr)
+		fw->createFireWorkParticle(p);
+
 }

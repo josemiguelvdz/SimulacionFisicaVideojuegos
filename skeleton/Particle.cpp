@@ -22,6 +22,8 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, doub
 
 	mAlive = true;
 	mStaticParticle = staticParticle;
+
+	mGenId = 0;
 }
 
 Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, bool staticParticle)
@@ -121,6 +123,10 @@ Particle* Particle::setPos(physx::PxVec3 pos)
 	mPos = pos;
 	mTransform = physx::PxTransform(mPos);
 	return this;
+}
+
+physx::PxVec3 Particle::getPos() {
+	return mTransform.p;
 }
 
 Particle* Particle::setDamp(double damp)

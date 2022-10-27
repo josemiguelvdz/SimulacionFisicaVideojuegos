@@ -7,6 +7,7 @@
 #include "UniformParticleGenerator.h"
 #include "NieveParticleGenerator.h"
 #include "SpaceParticleGenerator.h"
+#include "FireWorkParticleGenerator.h"
 
 #include <vector>
 
@@ -31,6 +32,8 @@ public:
 	void ShootHeavyBullet();
 	void ShootLightBullet();
 
+	void CreateFireWork();
+
 private:
 
 	int mID = 0;
@@ -49,6 +52,7 @@ private:
 	Projectile Simulate(double simulatedVel, Projectile real);
 
 	ParticleSystem* pSystem = nullptr;
-
+	FireWorkParticleGenerator* fw = nullptr;
+	
 };
 
