@@ -7,6 +7,7 @@ class ParticleSystem
 {
 public:
 	ParticleSystem();
+	~ParticleSystem();
 
 	void Integrate(double t);
 	ParticleGenerator* getParticleGenerator(std::string name);

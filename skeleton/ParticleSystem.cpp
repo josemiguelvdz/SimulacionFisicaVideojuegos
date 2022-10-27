@@ -6,6 +6,14 @@ ParticleSystem::ParticleSystem()
 {
 }
 
+ParticleSystem::~ParticleSystem() {
+	for (auto p : mParticles)
+		delete p;
+
+	for (auto g : mParticleGenerators)
+		delete g;
+}
+
 void ParticleSystem::Integrate(double t)
 {
 	static int contador = 0;

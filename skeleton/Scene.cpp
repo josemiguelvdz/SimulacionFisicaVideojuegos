@@ -228,6 +228,17 @@ void Scene::ClearScene()
 
 	mParticles.clear();
 	mPlanes.clear();
+
+	if (pSystem != nullptr) {
+		delete pSystem;
+		pSystem = nullptr;
+	}
+
+	if (fw != nullptr) {
+		delete fw;
+		fw = nullptr;
+	}
+		
 }
 
 void Scene::ShootBullet(){

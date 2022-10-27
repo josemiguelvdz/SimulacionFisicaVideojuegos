@@ -15,6 +15,13 @@ FireWorkParticleGenerator::FireWorkParticleGenerator(physx::PxVec3 stdDevPos, ph
 	numPartPerExplosion = std::rand() % (max - min + 1) + min;
 }
 
+FireWorkParticleGenerator::~FireWorkParticleGenerator() {
+	for (auto p : mParticles)
+		delete p;
+
+	mParticles.clear();
+}
+
 void FireWorkParticleGenerator::createFireWorkParticle(Particle* p) {
     mParticles.push_back(p);
 }

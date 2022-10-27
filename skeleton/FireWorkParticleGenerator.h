@@ -9,6 +9,7 @@ using namespace std;
 class FireWorkParticleGenerator {
 public:
 	FireWorkParticleGenerator(physx::PxVec3 stdDevPos, physx::PxVec3 stdDevVel);
+	~FireWorkParticleGenerator();
 
 	void createFireWorkParticle(Particle* p);
 
