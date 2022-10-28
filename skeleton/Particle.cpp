@@ -78,14 +78,15 @@ void Particle::integrate(float t)
 	if (mInverseMass <= 0.0f)
 		return;
 
-	// Update position
-	mTransform = physx::PxTransform(mTransform.p.x + mVelocity.x * t, mTransform.p.y + mVelocity.y * t, mTransform.p.z + mVelocity.z * t);
-
 	// Update linear  velocity
 	mVelocity += mAcceleration * t;
 
 	// Impose drag (damping)
 	mVelocity *= powf(mDamping, t);
+
+	// Update position
+	mTransform = physx::PxTransform(mTransform.p.x + mVelocity.x * t, mTransform.p.y + mVelocity.y * t, mTransform.p.z + mVelocity.z * t);
+
 
 	// Life Time
 	mCurrLifeTime = clock();

@@ -82,7 +82,7 @@ void Scene::LoadScene(int newID)
 			pSystem->addParticleGenerator(stars);
 			pSystem->addParticleGenerator(stars2);
 
-			Particle* planet1 = new Particle({ 3000, 0, 400 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 100, { 1 ,1,.2, 1 }, 0, true);
+			Particle* planet1 = new Particle({ 3000, 0, 400 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 300, { 1 ,.6, 0, 1 }, 0, true);
 			planet1->setName("Sol");
 			AddParticle(planet1);
 
@@ -97,9 +97,9 @@ void Scene::LoadScene(int newID)
 
 void Scene::Update(double t)
 {
-	static double suma = 1.0;
+	static double suma = 100.0;
 	static double color_r = 1;
-	static double color_g = 1;
+	static double color_g = .6;
 	static double color_b = .2;
 
 	static bool expansion = false;
@@ -118,12 +118,12 @@ void Scene::Update(double t)
 				p->setShape(CreateShape(physx::PxSphereGeometry(suma)));
 				p->setColor(physx::PxVec4(color_r, color_g, color_b, 1));
 				// 
-				suma += 0.05;
+				suma += 0.07;
 
 				color_g -= 0.0001;
 				if (color_g < 0)
 					color_g = 0;
-				color_b -= 0.00001;
+				color_b -= 0.0001;
 				if (color_b < 0)
 					color_b = 0;
 
