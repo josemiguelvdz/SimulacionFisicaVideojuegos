@@ -97,14 +97,6 @@ void Scene::LoadScene(int newID)
 
 void Scene::Update(double t)
 {
-	static double suma = 100.0;
-	static double color_r = 1;
-	static double color_g = .6;
-	static double color_b = .2;
-
-	static bool expansion = false;
-	static bool contraccion = false;
-
 	int cont = 0;
 	for (auto p : mParticles) {
 		if (!p->isAlive()) {
@@ -113,56 +105,8 @@ void Scene::Update(double t)
 		}
 		else {
 			p->integrate(t);
-			
-			if (p->mName == "Sol") {
-				p->setShape(CreateShape(physx::PxSphereGeometry(suma)));
-				p->setColor(physx::PxVec4(color_r, color_g, color_b, 1));
-				// 
-				suma += 0.07;
-
-				color_g -= 0.0001;
-				if (color_g < 0)
-					color_g = 0;
-				color_b -= 0.0001;
-				if (color_b < 0)
-					color_b = 0;
-
-				if (suma >= 600 && !contraccion) {
-					contraccion = true;
-				}
-
-				if(contraccion && !expansion){
-					suma -= 30;
-
-					color_b += 0.01;
-					if (color_b > 1)
-						color_b = 1;
-					color_r -= 0.01;
-					if (color_r < 0)
-						color_r = 0;
-
-					if (suma < 10 && !expansion) {
-						expansion = true;
-					}
-				}
-
-				if (expansion) {
-					suma += 30;
-
-					color_b += 0.2;
-					color_r += 0.2;
-					color_g += 0.2;
-
-					if (color_b > 1)
-						color_b = 1;
-					if (color_g > 1)
-						color_g = 1;
-					if (color_r > 1)
-						color_r = 1;
-				}
-					
-			}
-			
+			if(p->mName == "Sol")
+				UpdateSun(p);
 		}
 
 		cont++;
@@ -389,5 +333,62 @@ void Scene::CreateFireWork() {
 
 	if(fw != nullptr)
 		fw->createFireWorkParticle(p);
+
+}
+
+void Scene::UpdateSun(Particle* p) {
+	static double suma = 100.0;
+	static double color_r = 1;
+	static double color_g = .6;
+	static double color_b = .2;
+
+	static bool expansion = false;
+	static bool contraccion = false;
+
+	p->setShape(CreateShape(physx::PxSphereGeometry(suma)));
+	p->setColor(physx::PxVec4(color_r, color_g, color_b, 1));
+	// 
+	suma += 0.07;
+
+	color_g -= 0.0001;
+	if (color_g < 0)
+		color_g = 0;
+	color_b -= 0.0001;
+	if (color_b < 0)
+		color_b = 0;
+
+	if (suma >= 600 && !contraccion) {
+		contraccion = true;
+	}
+
+	if (contraccion && !expansion) {
+		suma -= 30;
+
+		color_b += 0.01;
+		if (color_b > 1)
+			color_b = 1;
+		color_r -= 0.01;
+		if (color_r < 0)
+			color_r = 0;
+
+		if (suma < 10 && !expansion) {
+			expansion = true;
+		}
+	}
+
+	if (expansion) {
+		suma += 30;
+
+		color_b += 0.2;
+		color_r += 0.2;
+		color_g += 0.2;
+
+		if (color_b > 1)
+			color_b = 1;
+		if (color_g > 1)
+			color_g = 1;
+		if (color_r > 1)
+			color_r = 1;
+	}
 
 }

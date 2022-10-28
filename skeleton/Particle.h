@@ -22,6 +22,9 @@ private:
 	physx::PxVec3 mInitialVelocity;
 	physx::PxVec3 mAcceleration;
 
+	// Forces
+	physx::PxVec3 mForce;
+
 	// Damping property
 	double mDamping;
 
@@ -38,9 +41,9 @@ private:
 	float mMaxLifeTime;
 	float mCurrLifeTime;
 	bool mAlive;
-
 	bool mStaticParticle;
 
+	// Generation Id if needed
 	int mGenId;
 
 public:
@@ -81,6 +84,9 @@ public:
 	Particle* setLifeTime(float lifeTime);
 	Particle* setAlpha(float alpha);
 	Particle* setScale(float scale);
+
+	void clearForce();
+	void addForce(const physx::PxVec3& f);
 
 };
 

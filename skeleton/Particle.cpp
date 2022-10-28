@@ -24,6 +24,8 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, doub
 	mStaticParticle = staticParticle;
 
 	mGenId = 0;
+
+	clearForce();
 }
 
 Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, bool staticParticle)
@@ -40,6 +42,8 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, bool staticParticle)
 	mTransform = physx::PxTransform(pos.x, pos.y, pos.z);
 	mShape = CreateShape(physx::PxSphereGeometry(1.0));
 	mRenderItem = new RenderItem(mShape, &mTransform, mColor);
+
+	clearForce();
 }
 
 Particle::Particle(Particle* p)
@@ -61,6 +65,8 @@ Particle::Particle(Particle* p)
 	mMaxLifeTime = clock() + p->mMaxLifeTime;
 	mAlive = true;
 	mStaticParticle = p->mStaticParticle;
+
+	clearForce();
 }
 
 Particle::~Particle()
@@ -78,15 +84,20 @@ void Particle::integrate(float t)
 	if (mInverseMass <= 0.0f)
 		return;
 
+	// Update position
+	mTransform = physx::PxTransform(mTransform.p.x + mVelocity.x * t, mTransform.p.y + mVelocity.y * t, mTransform.p.z + mVelocity.z * t);
+
+	physx::PxVec3 totalAcceleration = mAcceleration;
+	mAcceleration += mForce * mInverseMass;
+
 	// Update linear  velocity
-	mVelocity += mAcceleration * t;
+	mVelocity += totalAcceleration * t;
 
 	// Impose drag (damping)
 	mVelocity *= powf(mDamping, t);
 
-	// Update position
-	mTransform = physx::PxTransform(mTransform.p.x + mVelocity.x * t, mTransform.p.y + mVelocity.y * t, mTransform.p.z + mVelocity.z * t);
-
+	// Clear Force
+	clearForce();
 
 	// Life Time
 	mCurrLifeTime = clock();
@@ -160,6 +171,16 @@ Particle* Particle::setAlpha(float alpha)
 {
 	
 	return this;
+}
+
+void Particle::clearForce()
+{
+	mForce = physx::PxVec3(0);
+}
+
+void Particle::addForce(const physx::PxVec3& f)
+{
+	mForce += f;
 }
 
 Particle* Particle::setColor(physx::PxVec4 color)

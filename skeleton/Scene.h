@@ -34,6 +34,8 @@ public:
 
 	void CreateFireWork();
 
+	void UpdateSun(Particle* p);
+
 private:
 
 	int mID = 0;
