@@ -1,9 +1,11 @@
 #include "ParticleSystem.h"
 
+
 #include <iostream>
 
 ParticleSystem::ParticleSystem()
 {
+	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -1, 0));
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -36,7 +38,11 @@ void ParticleSystem::Integrate(double t)
 			it = mParticles.erase(it);
 		}
 		else {
+			if (gForceGenerator != nullptr)
+				gForceGenerator->updateForce(*it, t);
+
 			(*it)->integrate(t);
+
 			it++;
 		}
 			

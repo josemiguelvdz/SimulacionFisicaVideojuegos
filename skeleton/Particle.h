@@ -15,6 +15,7 @@ private:
 	physx::PxVec3 mPos;
 
 	// Particle's mass
+	float mMass;
 	float mInverseMass;
 
 	// Particle's velocity & acceleration
@@ -78,7 +79,13 @@ public:
 
 	Particle* setAcc(physx::PxVec3 acc);
 	Particle* setDamp(double damp);
+
 	Particle* setIMass(double iMass);
+	float getIMass() { return mInverseMass; };
+
+	Particle* setMass(float mass) { mMass = mass; return this; };
+	float getMass() { return mMass; };
+
 	Particle* setColor(physx::PxVec4 color);
 	Particle* setShape(physx::PxShape* shape);
 	Particle* setLifeTime(float lifeTime);

@@ -2,6 +2,8 @@
 #include <random>
 
 #include "ParticleGenerator.h"
+#include "GravityForceGenerator.h"
+
 
 class ParticleSystem
 {
@@ -29,6 +31,8 @@ private:
 	std::list<ParticleGenerator*> mParticleGenerators;
 
 	bool RemoveParticle(int id);
+
+	GravityForceGenerator* gForceGenerator = nullptr;
 
 };
 

@@ -55,6 +55,8 @@ Particle::Particle(Particle* p)
 	mDamping = p->mDamping;
 
 	mInverseMass = p->mInverseMass;
+	mMass = p->mMass;
+	mForce = p->mForce;
 
 	mColor = p->mColor;
 
@@ -87,11 +89,10 @@ void Particle::integrate(float t)
 	// Update position
 	mTransform = physx::PxTransform(mTransform.p.x + mVelocity.x * t, mTransform.p.y + mVelocity.y * t, mTransform.p.z + mVelocity.z * t);
 
-	physx::PxVec3 totalAcceleration = mAcceleration;
 	mAcceleration += mForce * mInverseMass;
 
 	// Update linear  velocity
-	mVelocity += totalAcceleration * t;
+	mVelocity += mAcceleration * t;
 
 	// Impose drag (damping)
 	mVelocity *= powf(mDamping, t);
