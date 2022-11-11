@@ -5,7 +5,7 @@
 
 ParticleSystem::ParticleSystem()
 {
-	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -1, 0));
+	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -.7, 0));
 }
 
 ParticleSystem::~ParticleSystem() {

@@ -40,7 +40,7 @@ void Scene::LoadScene(int newID)
 		gauss->setMeanParticles(5);
 
 		Particle* prefab = new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false);
-		prefab->setMass(40);
+		prefab->setMass(1);
 		prefab->setIMass((float) 1 / prefab->getMass());
 
 		gauss->setParticle(prefab);
