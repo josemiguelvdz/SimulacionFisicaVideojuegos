@@ -3,6 +3,7 @@
 
 #include "ParticleGenerator.h"
 #include "GravityForceGenerator.h"
+#include "ParticleDragGenerator.h"
 
 
 class ParticleSystem
@@ -33,6 +34,7 @@ private:
 	bool RemoveParticle(int id);
 
 	GravityForceGenerator* gForceGenerator = nullptr;
+	ParticleDragGenerator* dForceGenerator = nullptr;
 
 };
 

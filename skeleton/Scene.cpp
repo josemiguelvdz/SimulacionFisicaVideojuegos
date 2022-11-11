@@ -37,7 +37,7 @@ void Scene::LoadScene(int newID)
 
 		pSystem = new ParticleSystem();
 		GaussianParticleGenerator* gauss = new GaussianParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0), 0, 1);
-		gauss->setMeanParticles(5);
+		gauss->setMeanParticles(1);
 
 		Particle* prefab = new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false);
 		prefab->setMass(1);

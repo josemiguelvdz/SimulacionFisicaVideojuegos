@@ -260,6 +260,7 @@
     <ClCompile Include="NieveParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleDragGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="NieveParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleDragGenerator.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Plane.h" />
