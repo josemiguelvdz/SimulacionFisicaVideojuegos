@@ -1,7 +1,7 @@
 #pragma once
 using namespace std;
 
-#include "Particle.h"
+#include "../Particle.h"
 
 class ForceGenerator {
 public:

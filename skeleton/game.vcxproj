@@ -255,12 +255,13 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="FireWorkParticleGenerator.cpp" />
+    <ClCompile Include="Forces\GravityForceGenerator.cpp" />
+    <ClCompile Include="Forces\ParticleDragGenerator.cpp" />
+    <ClCompile Include="Forces\WindForceGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
-    <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="NieveParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleDragGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -275,13 +276,14 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="FireWorkParticleGenerator.h" />
-    <ClInclude Include="ForceGenerator.h" />
-    <ClInclude Include="ForceRegistry.hpp" />
+    <ClInclude Include="Forces\ForceGenerator.h" />
+    <ClInclude Include="Forces\ForceRegistry.hpp" />
+    <ClInclude Include="Forces\GravityForceGenerator.h" />
+    <ClInclude Include="Forces\ParticleDragGenerator.h" />
+    <ClInclude Include="Forces\WindForceGenerator.h" />
     <ClInclude Include="GaussianParticleGenerator.h" />
-    <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="NieveParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
-    <ClInclude Include="ParticleDragGenerator.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Plane.h" />

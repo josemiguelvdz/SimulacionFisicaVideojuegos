@@ -20,8 +20,9 @@
     <ClCompile Include="NieveParticleGenerator.cpp" />
     <ClCompile Include="SpaceParticleGenerator.cpp" />
     <ClCompile Include="FireWorkParticleGenerator.cpp" />
-    <ClCompile Include="GravityForceGenerator.cpp" />
-    <ClCompile Include="ParticleDragGenerator.cpp" />
+    <ClCompile Include="Forces\GravityForceGenerator.cpp" />
+    <ClCompile Include="Forces\ParticleDragGenerator.cpp" />
+    <ClCompile Include="Forces\WindForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -43,10 +44,11 @@
     <ClInclude Include="NieveParticleGenerator.h" />
     <ClInclude Include="SpaceParticleGenerator.h" />
     <ClInclude Include="FireWorkParticleGenerator.h" />
-    <ClInclude Include="ForceRegistry.hpp" />
-    <ClInclude Include="ForceGenerator.h" />
-    <ClInclude Include="GravityForceGenerator.h" />
-    <ClInclude Include="ParticleDragGenerator.h" />
+    <ClInclude Include="Forces\ForceGenerator.h" />
+    <ClInclude Include="Forces\ForceRegistry.hpp" />
+    <ClInclude Include="Forces\GravityForceGenerator.h" />
+    <ClInclude Include="Forces\ParticleDragGenerator.h" />
+    <ClInclude Include="Forces\WindForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

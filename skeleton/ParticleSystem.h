@@ -2,8 +2,9 @@
 #include <random>
 
 #include "ParticleGenerator.h"
-#include "GravityForceGenerator.h"
-#include "ParticleDragGenerator.h"
+#include "./Forces/GravityForceGenerator.h"
+#include "./Forces/ParticleDragGenerator.h"
+#include "./Forces/WindForceGenerator.h"
 
 
 class ParticleSystem
@@ -35,6 +36,7 @@ private:
 
 	GravityForceGenerator* gForceGenerator = nullptr;
 	ParticleDragGenerator* dForceGenerator = nullptr;
+	WindForceGenerator* wForceGenerator = nullptr;
 
 };
 

@@ -47,6 +47,10 @@ private:
 	// Generation Id if needed
 	int mGenId;
 
+	// Wind Friction
+	double mWindFriction = 1;
+	double mWindFriction2 = 0;
+
 public:
 	// Constructor
 	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle);
@@ -91,6 +95,12 @@ public:
 	Particle* setLifeTime(float lifeTime);
 	Particle* setAlpha(float alpha);
 	Particle* setScale(float scale);
+
+	Particle* setWindFriction(double friction) { mWindFriction = friction; };
+	Particle* setWindFriction2(double friction2) { mWindFriction2 = friction2; };
+
+	double getWindFriction() { return mWindFriction; };
+	double getWindFriction2() { return mWindFriction2; };
 
 	void clearForce();
 	void addForce(const physx::PxVec3& f);

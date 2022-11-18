@@ -18,13 +18,12 @@ void ParticleDragGenerator::updateForce(Particle* particle, double t)
 		return;
 
 	physx::PxVec3 v = particle->getVel();
-	float drag_coef = v.normalize();
+	float drag_coef = v.magnitude();
 
 	physx::PxVec3 dragF;
 	drag_coef = mK1 * drag_coef + mK2 * drag_coef * drag_coef;
 
 	dragF = -v * drag_coef;
 
-	std::cout << dragF.x << "\t" << dragF.y << "\t" << dragF.z << "\n";
 	particle->addForce(dragF);
 }

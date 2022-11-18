@@ -6,7 +6,8 @@
 ParticleSystem::ParticleSystem()
 {
 	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -.7, 0));
-	dForceGenerator = new ParticleDragGenerator(0.3, 0);
+	// dForceGenerator = new ParticleDragGenerator(0, 0);
+	wForceGenerator = new WindForceGenerator(physx::PxVec3(-1, 0, 0));
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -39,11 +40,14 @@ void ParticleSystem::Integrate(double t)
 			it = mParticles.erase(it);
 		}
 		else {
-			/*if (gForceGenerator != nullptr)
-				gForceGenerator->updateForce(*it, t);*/
+			if (gForceGenerator != nullptr)
+				gForceGenerator->updateForce(*it, t);
 
 			if (dForceGenerator != nullptr)
 				dForceGenerator->updateForce(*it, t);
+
+			if (wForceGenerator != nullptr)
+				wForceGenerator->updateForce(*it, t);
 
 			(*it)->integrate(t);
 
