@@ -5,9 +5,11 @@
 
 ParticleSystem::ParticleSystem()
 {
-	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -.7, 0));
+	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -.001, 0));
 	// dForceGenerator = new ParticleDragGenerator(0, 0);
-	wForceGenerator = new WindForceGenerator(physx::PxVec3(-1, 0, 0));
+	// wForceGenerator = new WindForceGenerator(physx::PxVec3(-1, 0, 0));
+
+	tForceGenerator = new TorbellinoForceGenerator(physx::PxVec3(30, 0, 30), .1, .1);
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -48,6 +50,9 @@ void ParticleSystem::Integrate(double t)
 
 			if (wForceGenerator != nullptr)
 				wForceGenerator->updateForce(*it, t);
+
+			if (tForceGenerator != nullptr)
+				tForceGenerator->updateForce(*it, t);
 
 			(*it)->integrate(t);
 

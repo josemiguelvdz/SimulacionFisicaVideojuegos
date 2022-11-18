@@ -257,6 +257,7 @@
     <ClCompile Include="FireWorkParticleGenerator.cpp" />
     <ClCompile Include="Forces\GravityForceGenerator.cpp" />
     <ClCompile Include="Forces\ParticleDragGenerator.cpp" />
+    <ClCompile Include="Forces\TorbellinoForceGenerator.cpp" />
     <ClCompile Include="Forces\WindForceGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
     <ClCompile Include="NieveParticleGenerator.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="Forces\ForceRegistry.hpp" />
     <ClInclude Include="Forces\GravityForceGenerator.h" />
     <ClInclude Include="Forces\ParticleDragGenerator.h" />
+    <ClInclude Include="Forces\TorbellinoForceGenerator.h" />
     <ClInclude Include="Forces\WindForceGenerator.h" />
     <ClInclude Include="GaussianParticleGenerator.h" />
     <ClInclude Include="NieveParticleGenerator.h" />
