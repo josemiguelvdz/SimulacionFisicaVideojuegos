@@ -6,6 +6,7 @@
 #include "./Forces/ParticleDragGenerator.h"
 #include "./Forces/WindForceGenerator.h"
 #include "./Forces/TorbellinoForceGenerator.h"
+#include "./Forces/ExplosionForceGenerator.h"
 
 
 class ParticleSystem
@@ -39,6 +40,7 @@ private:
 	ParticleDragGenerator* dForceGenerator = nullptr;
 	WindForceGenerator* wForceGenerator = nullptr;
 	TorbellinoForceGenerator* tForceGenerator = nullptr;
+	ExplosionForceGenerator* eForceGenerator = nullptr;
 
 };
 
