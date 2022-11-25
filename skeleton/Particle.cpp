@@ -97,6 +97,9 @@ void Particle::integrate(float t)
 	// Impose drag (damping)
 	mVelocity *= powf(mDamping, t);
 
+
+	std::cout << "x/y/z: " << mVelocity.x << " / " << mVelocity.y << " / " << mVelocity.z << "\n";
+
 	// Clear Force
 	clearForce();
 

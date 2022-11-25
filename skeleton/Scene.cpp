@@ -14,42 +14,45 @@ Scene::~Scene()
 
 void Scene::LoadScene(int newID)
 {
-	ClearScene();
+	if(newID == 8)
+		vForceGenerators.clear();
+	else {
+		ClearScene();
 
-	mID = newID;
+		mID = newID;
 
-	Particle* diana = nullptr;
+		Particle* diana = nullptr;
 
-	switch (mID) {
-	case 0:
-		AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, {0, 0, 0}, 1, 1, {0,0,1,1}, 0, true));
-		break;
-	case 1:
-		// Escena de simulación de proyectiles
-		AddPlane(new Plane({ 40, 40, 40 }));
+		switch (mID) {
+		case 0:
+			AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1, 1, { 0,0,1,1 }, 0, true));
+			break;
+		case 1:
+			// Escena de simulación de proyectiles
+			AddPlane(new Plane({ 40, 40, 40 }));
 
-		diana = new Particle({ 40, 50, 40 }, { 0, 0, 0 }, { 0, 0, 0 }, 0, 1, {0, 0, 1, 1}, 0, true);
-		AddParticle(diana);
-		break;
-	case 2:
+			diana = new Particle({ 40, 50, 40 }, { 0, 0, 0 }, { 0, 0, 0 }, 0, 1, { 0, 0, 1, 1 }, 0, true);
+			AddParticle(diana);
+			break;
+		case 2:
 		{
-		AddPlane(new Plane({ 40, 40, 40 }));
+			AddPlane(new Plane({ 40, 40, 40 }));
 
-		pSystem = new ParticleSystem();
-		GaussianParticleGenerator* gauss = new GaussianParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0), 0, 1);
-		gauss->setMeanParticles(1);
+			pSystem = new ParticleSystem();
+			GaussianParticleGenerator* gauss = new GaussianParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0), 0, 1);
+			gauss->setMeanParticles(1);
 
-		Particle* prefab = new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false);
+			Particle* prefab = new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false);
 
-		prefab->setMass(1);
-		prefab->setIMass((float) 1 / prefab->getMass());
+			prefab->setMass(1);
+			prefab->setIMass((float)1 / prefab->getMass());
 
-		gauss->setParticle(prefab);
+			gauss->setParticle(prefab);
 
-		pSystem->addParticleGenerator(gauss);
-		break;
+			pSystem->addParticleGenerator(gauss);
+			break;
 		}
-	case 3:
+		case 3:
 		{
 			AddPlane(new Plane({ 40, 40, 40 }));
 
@@ -58,10 +61,10 @@ void Scene::LoadScene(int newID)
 			uniform->setMeanParticles(5);
 			uniform->setParticle(new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, -30, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false));
 			pSystem->addParticleGenerator(uniform);
-	
+
 		}
 		break;
-	case 4:
+		case 4:
 		{
 			AddPlane(new Plane({ 40, 40, 40 }));
 
@@ -72,7 +75,7 @@ void Scene::LoadScene(int newID)
 			pSystem->addParticleGenerator(humo);
 		}
 		break;
-	case 5:
+		case 5:
 		{
 			// Snippets::backgroundColor = physx::PxVec3(0, 0, 0);
 			// AddPlane(new Plane({ 40, 40, 40 }));
@@ -94,12 +97,18 @@ void Scene::LoadScene(int newID)
 			AddParticle(planet1);
 
 		}
-	case 6:
-		fw = new FireWorkParticleGenerator(physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0));
-		break;
-	default:
-		break;
+		case 6:
+			fw = new FireWorkParticleGenerator(physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0));
+
+		case 7:
+			generateSpringDemo();
+			break;
+
+		default:
+			break;
+		}
 	}
+	
 }
 
 void Scene::Update(double t)
@@ -111,13 +120,19 @@ void Scene::Update(double t)
 			cont--;
 		}
 		else {
+			for (auto fg : vForceGenerators)
+				fg->updateForce(p, t);
+
 			p->integrate(t);
+
 			if(p->mName == "Sol")
 				UpdateSun(p);
 		}
 
 		cont++;
 	}
+
+	
 
 	if(pSystem != nullptr)
 		pSystem->Integrate(t);
@@ -400,4 +415,30 @@ void Scene::UpdateSun(Particle* p) {
 			color_r = 1;
 	}
 
+}
+
+void Scene::generateSpringDemo()
+{
+	// Unimos 2 particulas
+	Particle* p1 = new Particle(physx::PxVec3(0, 50, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(1, 0, 0, 1), 1000, true);
+	//Particle* p2 = new Particle(physx::PxVec3(0, 30, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(0, 1, 0, 1), 1000, true);
+
+	/*p2->setMass(2.0);
+	p2->setIMass((float)1 / p2->getMass());*/
+
+	p1->setMass(1.0);
+	p1->setIMass((float)1 / p1->getMass());
+
+	// Gravedad?
+	GravityForceGenerator* g1 = new GravityForceGenerator(physx::PxVec3(0, -0.03, 0));
+
+	//SpringForceGenerator* f1 = new SpringForceGenerator(1, 20, p1);
+	//SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
+
+	//vForceGenerators.push_back(f1);
+	vForceGenerators.push_back(g1);
+	//vForceGenerators.push_back(f2);
+
+	mParticles.push_back(p1);
+	//mParticles.push_back(p2);
 }

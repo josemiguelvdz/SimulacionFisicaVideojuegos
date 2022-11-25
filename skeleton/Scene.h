@@ -8,6 +8,8 @@
 #include "NieveParticleGenerator.h"
 #include "SpaceParticleGenerator.h"
 #include "FireWorkParticleGenerator.h"
+#include "Forces/SpringForceGenerator.h"
+#include "Forces/GravityForceGenerator.h"
 
 
 #include <vector>
@@ -37,6 +39,8 @@ public:
 
 	void UpdateSun(Particle* p);
 
+	void generateSpringDemo();
+
 private:
 
 	int mID = 0;
@@ -56,6 +60,8 @@ private:
 
 	ParticleSystem* pSystem = nullptr;
 	FireWorkParticleGenerator* fw = nullptr;
+
+	vector<ForceGenerator*> vForceGenerators;
 	
 };
 
