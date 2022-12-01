@@ -14,99 +14,95 @@ Scene::~Scene()
 
 void Scene::LoadScene(int newID)
 {
-	if(newID == 8)
-		vForceGenerators.clear();
-	else {
-		ClearScene();
+	ClearScene();
 
-		mID = newID;
+	mID = newID;
 
-		Particle* diana = nullptr;
+	Particle* diana = nullptr;
 
-		switch (mID) {
-		case 0:
-			AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1, 1, { 0,0,1,1 }, 0, true));
-			break;
-		case 1:
-			// Escena de simulación de proyectiles
-			AddPlane(new Plane({ 40, 40, 40 }));
-
-			diana = new Particle({ 40, 50, 40 }, { 0, 0, 0 }, { 0, 0, 0 }, 0, 1, { 0, 0, 1, 1 }, 0, true);
-			AddParticle(diana);
-			break;
-		case 2:
-		{
-			AddPlane(new Plane({ 40, 40, 40 }));
-
-			pSystem = new ParticleSystem();
-			GaussianParticleGenerator* gauss = new GaussianParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0), 0, 1);
-			gauss->setMeanParticles(1);
-
-			Particle* prefab = new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false);
-
-			prefab->setMass(1);
-			prefab->setIMass((float)1 / prefab->getMass());
-
-			gauss->setParticle(prefab);
-
-			pSystem->addParticleGenerator(gauss);
-			break;
-		}
-		case 3:
-		{
-			AddPlane(new Plane({ 40, 40, 40 }));
-
-			pSystem = new ParticleSystem();
-			UniformParticleGenerator* uniform = new UniformParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0));
-			uniform->setMeanParticles(5);
-			uniform->setParticle(new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, -30, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false));
-			pSystem->addParticleGenerator(uniform);
-
-		}
+	switch (mID) {
+	case 0:
+		AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1, 1, { 0,0,1,1 }, 0, true));
 		break;
-		case 4:
-		{
-			AddPlane(new Plane({ 40, 40, 40 }));
+	case 1:
+		// Escena de simulación de proyectiles
+		AddPlane(new Plane({ 40, 40, 40 }));
 
-			pSystem = new ParticleSystem();
-			NieveParticleGenerator* humo = new NieveParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(5, -3, 5), 0, 1);
-			humo->setMeanParticles(10);
-			humo->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.5, 0 }, 1, 0.5, { 0,0,1,1 }, 10000, false));
-			pSystem->addParticleGenerator(humo);
-		}
+		diana = new Particle({ 40, 50, 40 }, { 0, 0, 0 }, { 0, 0, 0 }, 0, 1, { 0, 0, 1, 1 }, 0, true);
+		AddParticle(diana);
 		break;
-		case 5:
-		{
-			// Snippets::backgroundColor = physx::PxVec3(0, 0, 0);
-			// AddPlane(new Plane({ 40, 40, 40 }));
+	case 2:
+	{
+		AddPlane(new Plane({ 40, 40, 40 }));
 
-			pSystem = new ParticleSystem();
-			SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(0, 0, 0));
-			stars->setMeanParticles(5);
-			stars->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 4000, false));
+		pSystem = new ParticleSystem();
+		GaussianParticleGenerator* gauss = new GaussianParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0), 0, 1);
+		gauss->setMeanParticles(1);
 
-			SpaceParticleGenerator* stars2 = new SpaceParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(0, 0, 0));
-			stars2->setMeanParticles(1);
-			stars2->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 1, { .4 ,0,.8,1 }, 5000, false));
+		Particle* prefab = new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false);
 
-			pSystem->addParticleGenerator(stars);
-			pSystem->addParticleGenerator(stars2);
+		prefab->setMass(1);
+		prefab->setIMass((float)1 / prefab->getMass());
 
-			Particle* planet1 = new Particle({ 3000, 0, 400 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 300, { 1 ,.6, 0, 1 }, 0, true);
-			planet1->setName("Sol");
-			AddParticle(planet1);
+		gauss->setParticle(prefab);
 
-		}
-		case 6:
-			fw = new FireWorkParticleGenerator(physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0));
+		pSystem->addParticleGenerator(gauss);
+		break;
+	}
+	case 3:
+	{
+		AddPlane(new Plane({ 40, 40, 40 }));
 
-		case 7:
-			generateSpringDemo();
-			break;
+		pSystem = new ParticleSystem();
+		UniformParticleGenerator* uniform = new UniformParticleGenerator(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 50, 0));
+		uniform->setMeanParticles(5);
+		uniform->setParticle(new Particle({ 30, 40, 30 }, { 0, 0, 0 }, { 0, -30, 0 }, 1, 0.6, { 0,0,1,1 }, 2000, false));
+		pSystem->addParticleGenerator(uniform);
 
-		default:
-			break;
-		}
+	}
+	break;
+	case 4:
+	{
+		AddPlane(new Plane({ 40, 40, 40 }));
+
+		pSystem = new ParticleSystem();
+		NieveParticleGenerator* humo = new NieveParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(5, -3, 5), 0, 1);
+		humo->setMeanParticles(10);
+		humo->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.5, 0 }, 1, 0.5, { 0,0,1,1 }, 10000, false));
+		pSystem->addParticleGenerator(humo);
+	}
+	break;
+	case 5:
+	{
+		// Snippets::backgroundColor = physx::PxVec3(0, 0, 0);
+		// AddPlane(new Plane({ 40, 40, 40 }));
+
+		pSystem = new ParticleSystem();
+		SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(0, 0, 0));
+		stars->setMeanParticles(5);
+		stars->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 4000, false));
+
+		SpaceParticleGenerator* stars2 = new SpaceParticleGenerator(physx::PxVec3(40, 40, 40), physx::PxVec3(0, 0, 0));
+		stars2->setMeanParticles(1);
+		stars2->setParticle(new Particle({ 40, 40, 40 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 1, { .4 ,0,.8,1 }, 5000, false));
+
+		pSystem->addParticleGenerator(stars);
+		pSystem->addParticleGenerator(stars2);
+
+		Particle* planet1 = new Particle({ 3000, 0, 400 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 300, { 1 ,.6, 0, 1 }, 0, true);
+		planet1->setName("Sol");
+		AddParticle(planet1);
+
+	}
+	case 6:
+		fw = new FireWorkParticleGenerator(physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0));
+
+	case 7:
+		generateSpringDemo();
+		break;
+
+	default:
+		break;
 	}
 	
 }
@@ -120,8 +116,11 @@ void Scene::Update(double t)
 			cont--;
 		}
 		else {
-			for (auto fg : vForceGenerators)
-				fg->updateForce(p, t);
+			for (auto fg : vForceGenerators) {
+				if (p->mName != "Static") {
+					fg->updateForce(p, t);
+				}
+			}
 
 			p->integrate(t);
 
@@ -421,24 +420,26 @@ void Scene::generateSpringDemo()
 {
 	// Unimos 2 particulas
 	Particle* p1 = new Particle(physx::PxVec3(0, 50, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(1, 0, 0, 1), 1000, true);
-	//Particle* p2 = new Particle(physx::PxVec3(0, 30, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(0, 1, 0, 1), 1000, true);
+	Particle* p2 = new Particle(physx::PxVec3(0, 30, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(0, 1, 0, 1), 1000, true);
 
-	/*p2->setMass(2.0);
-	p2->setIMass((float)1 / p2->getMass());*/
+	p2->setMass(2.0);
+	p2->setIMass((float)1 / p2->getMass());
 
 	p1->setMass(1.0);
 	p1->setIMass((float)1 / p1->getMass());
 
 	// Gravedad?
-	GravityForceGenerator* g1 = new GravityForceGenerator(physx::PxVec3(0, -0.03, 0));
+	GravityForceGenerator* g1 = new GravityForceGenerator(physx::PxVec3(0, -9.8, 0));
 
 	//SpringForceGenerator* f1 = new SpringForceGenerator(1, 20, p1);
-	//SpringForceGenerator* f2 = new SpringForceGenerator(1, 10, p1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(10, 10, p1);
+
+	p1->mName = "Static";
 
 	//vForceGenerators.push_back(f1);
 	vForceGenerators.push_back(g1);
-	//vForceGenerators.push_back(f2);
+	vForceGenerators.push_back(f2);
 
 	mParticles.push_back(p1);
-	//mParticles.push_back(p2);
+	mParticles.push_back(p2);
 }
