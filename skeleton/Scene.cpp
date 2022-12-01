@@ -96,11 +96,16 @@ void Scene::LoadScene(int newID)
 	}
 	case 6:
 		fw = new FireWorkParticleGenerator(physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0));
-
+		break;
 	case 7:
 		generateSpringDemo();
 		break;
 
+	case 8:
+		generateSlinky();
+		break;
+	case 9:
+		break;
 	default:
 		break;
 	}
@@ -445,3 +450,53 @@ void Scene::generateSpringDemo()
 	mParticles.push_back(p1);
 	mParticles.push_back(p2);
 }
+
+void Scene::generateSlinky() {
+	// Unimos 2 particulas
+	Particle* p0 = new Particle(physx::PxVec3(0, 80, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 3, physx::PxVec4(1, 1, 1, 1), 1000, true);
+
+	p0->mName = "Static";
+
+	// Gravedad
+	GravityForceGenerator* g1 = new GravityForceGenerator(physx::PxVec3(0, -9.8, 0));
+
+
+	mParticles.push_back(p0);
+
+	for (int i = 3; i > 0; i--) { // TODO: Force Registry
+		Particle* newParticle = new Particle(physx::PxVec3(0, 20 * i, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(1, 0, 0, 1), 1000, true);
+		mParticles.push_back(newParticle);
+		newParticle->setMass(1.0);
+		newParticle->setIMass((float)1 / newParticle->getMass());
+		SpringForceGenerator* force = new SpringForceGenerator(1, 20, p0);
+		vForceGenerators.push_back(force);
+		SpringForceGenerator* force2 = new SpringForceGenerator(1, 20, newParticle);
+		vForceGenerators.push_back(force2);
+
+		p0 = newParticle;
+	}
+
+	//// Viento
+	//w1 = new WindForceGenerator(physx::PxVec3(-15, 0, 0));
+
+	/*f1 = new SpringForceGenerator(10, 10, p1);
+	SpringForceGenerator* f2 = new SpringForceGenerator(10, 10, p2);*/
+
+	
+	// SlinkyForceGenerator* s1 = new SlinkyForceGenerator(1, 1, p0);
+	//SlinkyForceGenerator* s2 = new SlinkyForceGenerator(1, 20, p2);
+
+	//SlinkyForceGenerator* s3 = new SlinkyForceGenerator(1, 10, p3);
+	//SlinkyForceGenerator* s4 = new SlinkyForceGenerator(1, 5, p4);
+
+	// vForceGenerators.push_back(f1);
+	//vForceGenerators.push_back(g1);
+	//vForceGenerators.push_back(s1);
+	//vForceGenerators.push_back(s2);
+	//vForceGenerators.push_back(s3);
+	vForceGenerators.push_back(g1);
+
+
+
+}
+

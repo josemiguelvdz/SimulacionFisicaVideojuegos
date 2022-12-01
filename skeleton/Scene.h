@@ -10,6 +10,7 @@
 #include "FireWorkParticleGenerator.h"
 #include "Forces/SpringForceGenerator.h"
 #include "Forces/GravityForceGenerator.h"
+#include "Forces/SlinkyForceGenerator.h"
 
 
 #include <vector>
@@ -40,6 +41,7 @@ public:
 	void UpdateSun(Particle* p);
 
 	void generateSpringDemo();
+	void generateSlinky();
 
 	void addSpringCoef() { f1->setK(f1->getK() + 1); };
 	void subSpringCoef() { f1->setK(f1->getK() - 1); };
