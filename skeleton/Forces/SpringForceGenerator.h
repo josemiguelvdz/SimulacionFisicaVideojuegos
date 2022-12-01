@@ -11,6 +11,10 @@ public:
 		mK = k;
 	}
 
+	inline double getK() {
+		return mK;
+	}
+
 protected:
 	double mK; // Coef. elastico
 	double mRestLength;

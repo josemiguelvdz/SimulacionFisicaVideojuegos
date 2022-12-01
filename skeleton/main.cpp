@@ -156,6 +156,18 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		if (key == 'f') {
 			mSM->CreateFireWork();
 		}
+		if (key == 'k') { // aumenta el coef. del muelle
+			mSM->addSpringCoef();
+		}
+		if (key == 'l') { // disminuye el coef. del muelle
+			mSM->subSpringCoef();
+		}
+		if (key == 'v') { // aplica viento en un cierto momento
+			mSM->addViento();
+		}
+		if (key == 't') {
+			mSM->subViento();
+		}
 	}
 }
 

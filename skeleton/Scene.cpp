@@ -419,8 +419,8 @@ void Scene::UpdateSun(Particle* p) {
 void Scene::generateSpringDemo()
 {
 	// Unimos 2 particulas
-	Particle* p1 = new Particle(physx::PxVec3(0, 50, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(1, 0, 0, 1), 1000, true);
-	Particle* p2 = new Particle(physx::PxVec3(0, 30, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(0, 1, 0, 1), 1000, true);
+	Particle* p1 = new Particle(physx::PxVec3(0, 50, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 3, physx::PxVec4(1, 0, 0, 1), 1000, true);
+	Particle* p2 = new Particle(physx::PxVec3(0, 30, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.95, 0.85, physx::PxVec4(0, 1, 0, 1), 1000, true);
 
 	p2->setMass(2.0);
 	p2->setIMass((float)1 / p2->getMass());
@@ -428,17 +428,19 @@ void Scene::generateSpringDemo()
 	p1->setMass(1.0);
 	p1->setIMass((float)1 / p1->getMass());
 
-	// Gravedad?
+	// Gravedad
 	GravityForceGenerator* g1 = new GravityForceGenerator(physx::PxVec3(0, -9.8, 0));
 
-	//SpringForceGenerator* f1 = new SpringForceGenerator(1, 20, p1);
-	SpringForceGenerator* f2 = new SpringForceGenerator(10, 10, p1);
+	// Viento
+	w1 = new WindForceGenerator(physx::PxVec3(-15, 0, 0));
+
+	f1 = new SpringForceGenerator(10, 10, p1);
 
 	p1->mName = "Static";
 
 	//vForceGenerators.push_back(f1);
 	vForceGenerators.push_back(g1);
-	vForceGenerators.push_back(f2);
+	vForceGenerators.push_back(f1);
 
 	mParticles.push_back(p1);
 	mParticles.push_back(p2);

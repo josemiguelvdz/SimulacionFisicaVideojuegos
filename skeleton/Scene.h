@@ -41,6 +41,17 @@ public:
 
 	void generateSpringDemo();
 
+	void addSpringCoef() { f1->setK(f1->getK() + 1); };
+	void subSpringCoef() { f1->setK(f1->getK() - 1); };
+
+	void addViento() {
+		vForceGenerators.push_back(w1);
+	}
+
+	void subViento() {
+		vForceGenerators.pop_back();
+	}
+
 private:
 
 	int mID = 0;
@@ -62,6 +73,8 @@ private:
 	FireWorkParticleGenerator* fw = nullptr;
 
 	vector<ForceGenerator*> vForceGenerators;
-	
+
+	SpringForceGenerator* f1 = nullptr;
+	WindForceGenerator* w1 = nullptr;
 };
 
