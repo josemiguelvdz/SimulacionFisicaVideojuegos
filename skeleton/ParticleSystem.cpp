@@ -6,13 +6,13 @@
 ParticleSystem::ParticleSystem()
 {
 	// basic
-	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -10, 0));
-	//dForceGenerator = new ParticleDragGenerator(0, 0);
-	wForceGenerator = new WindForceGenerator(physx::PxVec3(-10, 0, 0));
+	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -20, 0));
+	// dForceGenerator = new ParticleDragGenerator(0.03, 0);
+	//wForceGenerator = new WindForceGenerator(physx::PxVec3(-10, 0, 0));
 
 	// torbellino y explosion
-	// tForceGenerator = new TorbellinoForceGenerator(physx::PxVec3(30, 0, 30), .1, .1);
-	//eForceGenerator = new ExplosionForceGenerator(physx::PxVec3(30, 41, 30), 50, 70, 0, 1500, 60);
+	//tForceGenerator = new TorbellinoForceGenerator(physx::PxVec3(30, -20, 30), 5, 20);
+	//eForceGenerator = new ExplosionForceGenerator(physx::PxVec3(30, 50, 30), 50, 70, 0, 100, 2000);
 }
 
 ParticleSystem::~ParticleSystem() {

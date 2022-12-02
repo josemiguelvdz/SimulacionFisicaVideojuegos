@@ -1,5 +1,8 @@
 #pragma once
 #include "ForceGenerator.h"
+#include <cmath>
+
+using namespace std;
 
 class ExplosionForceGenerator : public ForceGenerator
 {
@@ -15,7 +18,9 @@ protected:
 	double mDur;
 	double mForce;
 
-	double mExpTime = 1000; // Delay Exp
+	double mExpTime = 500; // Delay Exp
+
+	bool canExplode = false;
 
 	physx::PxVec3 expPow(physx::PxVec3 v, double e) { return physx::PxVec3(pow(v.x, e), pow(v.y, e), pow(v.z, e)); };
 	double expDist(Particle* particle, physx::PxVec3 pos);

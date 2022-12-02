@@ -1,5 +1,4 @@
 #include "ExplosionForceGenerator.h"
-#include <math.h>
 #include <iostream>
 
 ExplosionForceGenerator::ExplosionForceGenerator(physx::PxVec3 center, double rad, double maxRad, double time, double dur, double force)
@@ -17,15 +16,32 @@ void ExplosionForceGenerator::updateForce(Particle* particle, double t)
 	mTime += t;
 	mRad = mMaxRad * mTime / mDur;
 
-	//cout << mTime << "\n";
+	if (mTime > mExpTime) {
+		canExplode = !canExplode;
+		mTime = 0;
+	}
 
-	if (particle != nullptr && mTime > mExpTime) {
+	cout << mTime << "\n";
+
+	if (particle != nullptr && canExplode) {
 		if (fabs(particle->getIMass()) < 1e-10)
 			return;
 		
 		if ((particle->getPos() - mCenter).magnitudeSquared() < pow(mRad, 2)) {
 			double distance = expDist(particle, mCenter);
-			particle->addForce(mForce / pow(distance, 2) * (particle->getPos() - mCenter) * exp(-mTime / mDur));
+
+
+			physx::PxVec3 force = physx::PxVec3(mForce / pow(distance, 2));
+
+			physx::PxVec3 centerVec = particle->getPos() - mCenter;
+
+			physx::PxVec3 finalForce = physx::PxVec3(force.x * centerVec.x, force.y * centerVec.y, force.z * centerVec.z);
+
+			particle->addForce(finalForce * exp(-mTime / mDur));
+
+			//if ((particle->getPos() - mCenter).magnitudeSquared() < mRad * mRad) {
+			//	
+			//}
 		}
 	}
 }
