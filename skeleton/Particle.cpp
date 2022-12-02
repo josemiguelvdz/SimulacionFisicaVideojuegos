@@ -181,7 +181,8 @@ void Particle::clearForce()
 
 void Particle::addForce(const physx::PxVec3& f)
 {
-	mForce += f;
+	if(canRecForce)
+		mForce += f;
 }
 
 Particle* Particle::setColor(physx::PxVec4 color)

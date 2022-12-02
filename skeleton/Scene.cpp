@@ -205,6 +205,8 @@ void Scene::ClearScene()
 		delete fw;
 		fw = nullptr;
 	}
+
+	fg.clear();
 		
 }
 
@@ -448,8 +450,7 @@ void Scene::generateSpringDemo()
 void Scene::generateSlinky() {
 	// Unimos 2 particulas
 	Particle* p0 = new Particle(physx::PxVec3(0, 80, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 3, physx::PxVec4(1, 1, 1, 1), 1000, true);
-
-	p0->mName = "Static";
+	p0->setCanRecForce(false);
 
 	// Gravedad
 	GravityForceGenerator* g1 = new GravityForceGenerator(physx::PxVec3(0, -9.8, 0));
@@ -459,12 +460,18 @@ void Scene::generateSlinky() {
 
 	for (int i = 3; i > 0; i--) { // TODO: Force Registry
 		Particle* newParticle = new Particle(physx::PxVec3(0, 20 * i, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 0.85, physx::PxVec4(1, 0, 0, 1), 1000, true);
+		fg.AddRegistry(g1, newParticle);
+
 		mParticles.push_back(newParticle);
 		newParticle->setMass(1.0);
 		newParticle->setIMass((float)1 / newParticle->getMass());
-		SpringForceGenerator* force = new SpringForceGenerator(1, 20, p0);
-		vForceGenerators.push_back(force);
-		SpringForceGenerator* force2 = new SpringForceGenerator(1, 20, newParticle);
+
+		SpringForceGenerator* force = new SpringForceGenerator(5, 10, p0);
+		fg.AddRegistry(force, newParticle);
+
+		SpringForceGenerator* force2 = new SpringForceGenerator(5, 10, newParticle);
+		fg.AddRegistry(force2, p0);
+
 		vForceGenerators.push_back(force2);
 
 		p0 = newParticle;

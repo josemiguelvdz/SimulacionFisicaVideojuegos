@@ -51,6 +51,9 @@ private:
 	double mWindFriction = 1;
 	double mWindFriction2 = 0;
 
+	// Forces
+	bool canRecForce = true;
+
 public:
 	// Constructor
 	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle);
@@ -104,6 +107,8 @@ public:
 
 	void clearForce();
 	void addForce(const physx::PxVec3& f);
+
+	void setCanRecForce(bool recForce) { canRecForce = recForce; };
 
 };
 
