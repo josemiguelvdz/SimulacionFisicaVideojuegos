@@ -10,7 +10,7 @@ SlinkyForceGenerator::SlinkyForceGenerator(double k, double restLength, Particle
 
 void SlinkyForceGenerator::updateForce(Particle* particle, double t)
 {
-	if (particle != nullptr && mOther != nullptr && mOther != particle) {
+	if (particle != nullptr && mOther != nullptr && mOther != particle && mActive) {
 		if (fabs(particle->getIMass()) < 1e-10)
 			return;
 

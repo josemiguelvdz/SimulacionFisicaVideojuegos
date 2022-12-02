@@ -10,7 +10,7 @@ TorbellinoForceGenerator::TorbellinoForceGenerator(const physx::PxVec3& center, 
 
 void TorbellinoForceGenerator::updateForce(Particle* particle, double t)
 {
-	if (particle != nullptr) {
+	if (particle != nullptr && mActive) {
 		if (fabs(particle->getIMass()) < 1e-10)
 			return;
 

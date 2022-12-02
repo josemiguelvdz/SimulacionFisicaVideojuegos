@@ -8,9 +8,9 @@
 #include "NieveParticleGenerator.h"
 #include "SpaceParticleGenerator.h"
 #include "FireWorkParticleGenerator.h"
-#include "Forces/SpringForceGenerator.h"
-#include "Forces/GravityForceGenerator.h"
-#include "Forces/SlinkyForceGenerator.h"
+
+#include "Forces/ForceRegistry.h"
+
 
 
 #include <vector>
@@ -47,11 +47,11 @@ public:
 	void subSpringCoef() { f1->setK(f1->getK() - 1); };
 
 	void addViento() {
-		vForceGenerators.push_back(w1);
+		w1->setActive(true);
 	}
 
 	void subViento() {
-		vForceGenerators.pop_back();
+		w1->setActive(false);
 	}
 
 private:
@@ -78,5 +78,9 @@ private:
 
 	SpringForceGenerator* f1 = nullptr;
 	WindForceGenerator* w1 = nullptr;
+
+	ForceRegistry fg;
+
+
 };
 

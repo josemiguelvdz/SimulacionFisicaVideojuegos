@@ -27,6 +27,7 @@
     <ClCompile Include="Forces\ExplosionForceGenerator.cpp" />
     <ClCompile Include="Forces\SpringForceGenerator.cpp" />
     <ClCompile Include="Forces\SlinkyForceGenerator.cpp" />
+    <ClCompile Include="Forces\ForceRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -49,7 +50,6 @@
     <ClInclude Include="SpaceParticleGenerator.h" />
     <ClInclude Include="FireWorkParticleGenerator.h" />
     <ClInclude Include="Forces\ForceGenerator.h" />
-    <ClInclude Include="Forces\ForceRegistry.hpp" />
     <ClInclude Include="Forces\GravityForceGenerator.h" />
     <ClInclude Include="Forces\ParticleDragGenerator.h" />
     <ClInclude Include="Forces\WindForceGenerator.h" />
@@ -57,6 +57,7 @@
     <ClInclude Include="Forces\ExplosionForceGenerator.h" />
     <ClInclude Include="Forces\SpringForceGenerator.h" />
     <ClInclude Include="Forces\SlinkyForceGenerator.h" />
+    <ClInclude Include="Forces\ForceRegistry.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

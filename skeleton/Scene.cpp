@@ -121,12 +121,7 @@ void Scene::Update(double t)
 			cont--;
 		}
 		else {
-			for (auto fg : vForceGenerators) {
-				if (p->mName != "Static") {
-					fg->updateForce(p, t);
-				}
-			}
-
+			fg.Integrate(t);
 			p->integrate(t);
 
 			if(p->mName == "Sol")
@@ -435,17 +430,16 @@ void Scene::generateSpringDemo()
 
 	// Gravedad
 	GravityForceGenerator* g1 = new GravityForceGenerator(physx::PxVec3(0, -9.8, 0));
+	fg.AddRegistry(g1, p2);
 
 	// Viento
 	w1 = new WindForceGenerator(physx::PxVec3(-15, 0, 0));
+	w1->setActive(false);
+	fg.AddRegistry(w1, p2);
+
 
 	f1 = new SpringForceGenerator(10, 10, p1);
-
-	p1->mName = "Static";
-
-	//vForceGenerators.push_back(f1);
-	vForceGenerators.push_back(g1);
-	vForceGenerators.push_back(f1);
+	fg.AddRegistry(f1, p2);
 
 	mParticles.push_back(p1);
 	mParticles.push_back(p2);

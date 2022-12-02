@@ -7,7 +7,7 @@ GravityForceGenerator::GravityForceGenerator(const physx::PxVec3& g)
 
 void GravityForceGenerator::updateForce(Particle* particle, double t)
 {
-	if (particle != nullptr) {
+	if (particle != nullptr && mActive) {
 		if (fabs(particle->getIMass()) < 1e-10)
 			return;
 

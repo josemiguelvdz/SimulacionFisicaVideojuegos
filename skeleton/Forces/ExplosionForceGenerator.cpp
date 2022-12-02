@@ -23,13 +23,12 @@ void ExplosionForceGenerator::updateForce(Particle* particle, double t)
 
 	cout << mTime << "\n";
 
-	if (particle != nullptr && canExplode) {
+	if (particle != nullptr && canExplode && mActive) {
 		if (fabs(particle->getIMass()) < 1e-10)
 			return;
 		
 		if ((particle->getPos() - mCenter).magnitudeSquared() < pow(mRad, 2)) {
 			double distance = expDist(particle, mCenter);
-
 
 			physx::PxVec3 force = physx::PxVec3(mForce / pow(distance, 2));
 
@@ -38,10 +37,6 @@ void ExplosionForceGenerator::updateForce(Particle* particle, double t)
 			physx::PxVec3 finalForce = physx::PxVec3(force.x * centerVec.x, force.y * centerVec.y, force.z * centerVec.z);
 
 			particle->addForce(finalForce * exp(-mTime / mDur));
-
-			//if ((particle->getPos() - mCenter).magnitudeSquared() < mRad * mRad) {
-			//	
-			//}
 		}
 	}
 }
