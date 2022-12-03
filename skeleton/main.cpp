@@ -140,7 +140,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	toupper(key);
 
-	if (key >= 48 && key < 57) {
+	if (key >= 48 && key <= 57) {
 		mSM->LoadScene((int)key - 48);
 	}
 	else {
@@ -167,6 +167,39 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		}
 		if (key == 't') {
 			mSM->subViento();
+		}
+
+
+		// movement para ruberband
+		if (key == 'h') { // up
+			mSM->MovePlayerUp();
+		}
+		if (key == 'b') { // left
+			mSM->MovePlayerLeft();
+		}
+		if (key == 'n') { // down
+			mSM->MovePlayerDown();
+		}
+		if (key == 'm') { // right
+			mSM->MovePlayerRight();
+		}
+
+		if (key == 'o') {
+			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
+			bf->setVolume(bf->getVolume() + 0.01);
+		}
+		if (key == 'p') {
+			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
+			bf->setVolume(bf->getVolume() - 0.01);
+		}
+
+		if (key == 'u') {
+			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
+			bf->setDensity(bf->getDensity() + 0.1);
+		}
+		if (key == 'i') {
+			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
+			bf->setDensity(bf->getDensity() - 0.1);
 		}
 	}
 }

@@ -42,17 +42,44 @@ public:
 
 	void generateSpringDemo();
 	void generateSlinky();
+	void generateRuberband();
+	void generateWater();
 
 	void addSpringCoef() { f1->setK(f1->getK() + 1); };
 	void subSpringCoef() { f1->setK(f1->getK() - 1); };
 
 	void addViento() {
-		w1->setActive(true);
+		if (w1 != nullptr)
+			w1->setActive(true);
 	}
 
 	void subViento() {
-		w1->setActive(false);
+		if(w1 != nullptr)
+			w1->setActive(false);
 	}
+
+	void MovePlayerUp() {
+		if (player != nullptr) {
+			player->setPos(player->getPos() + physx::PxVec3(0, 2, 0));
+		}
+	}
+	void MovePlayerDown() {
+		if (player != nullptr) {
+			player->setPos(player->getPos() + physx::PxVec3(0, -2, 0));
+		}
+	}
+	void MovePlayerLeft() {
+		if (player != nullptr) {
+			player->setPos(player->getPos() + physx::PxVec3(-2, 0, 0));
+		}
+	}
+	void MovePlayerRight() {
+		if (player != nullptr) {
+			player->setPos(player->getPos() + physx::PxVec3(2, 0, 0));
+		}
+	}
+
+	BuoyancyForceGenerator* getBuoyancyForceGen() { return b; };
 
 private:
 
@@ -80,6 +107,10 @@ private:
 	WindForceGenerator* w1 = nullptr;
 
 	ForceRegistry fg;
+
+	Particle* player = nullptr;
+	
+	BuoyancyForceGenerator* b = nullptr;
 
 
 };

@@ -23,6 +23,7 @@ public:
 	Plane(physx::PxVec3 pos);
 	~Plane();
 
+
 	// Integration
 	// void integrate(double t);
 };

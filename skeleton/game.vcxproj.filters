@@ -26,8 +26,9 @@
     <ClCompile Include="Forces\TorbellinoForceGenerator.cpp" />
     <ClCompile Include="Forces\ExplosionForceGenerator.cpp" />
     <ClCompile Include="Forces\SpringForceGenerator.cpp" />
-    <ClCompile Include="Forces\SlinkyForceGenerator.cpp" />
+    <ClCompile Include="Forces\RuberbandForceGenerator.cpp" />
     <ClCompile Include="Forces\ForceRegistry.cpp" />
+    <ClCompile Include="Forces\BuoyancyForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -56,8 +57,9 @@
     <ClInclude Include="Forces\TorbellinoForceGenerator.h" />
     <ClInclude Include="Forces\ExplosionForceGenerator.h" />
     <ClInclude Include="Forces\SpringForceGenerator.h" />
-    <ClInclude Include="Forces\SlinkyForceGenerator.h" />
+    <ClInclude Include="Forces\RuberbandForceGenerator.h" />
     <ClInclude Include="Forces\ForceRegistry.h" />
+    <ClInclude Include="Forces\BuoyancyForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

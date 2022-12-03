@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include <cmath>
 
 #include <iostream>
 
@@ -94,17 +95,18 @@ void Scene::LoadScene(int newID)
 		AddParticle(planet1);
 
 	}
+	break;
 	case 6:
-		fw = new FireWorkParticleGenerator(physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0));
+		generateWater();
 		break;
 	case 7:
 		generateSpringDemo();
 		break;
-
 	case 8:
 		generateSlinky();
 		break;
 	case 9:
+		generateRuberband();
 		break;
 	default:
 		break;
@@ -477,27 +479,39 @@ void Scene::generateSlinky() {
 		p0 = newParticle;
 	}
 
-	//// Viento
-	//w1 = new WindForceGenerator(physx::PxVec3(-15, 0, 0));
-
-	/*f1 = new SpringForceGenerator(10, 10, p1);
-	SpringForceGenerator* f2 = new SpringForceGenerator(10, 10, p2);*/
-
-	
-	// SlinkyForceGenerator* s1 = new SlinkyForceGenerator(1, 1, p0);
-	//SlinkyForceGenerator* s2 = new SlinkyForceGenerator(1, 20, p2);
-
-	//SlinkyForceGenerator* s3 = new SlinkyForceGenerator(1, 10, p3);
-	//SlinkyForceGenerator* s4 = new SlinkyForceGenerator(1, 5, p4);
-
-	// vForceGenerators.push_back(f1);
-	//vForceGenerators.push_back(g1);
-	//vForceGenerators.push_back(s1);
-	//vForceGenerators.push_back(s2);
-	//vForceGenerators.push_back(s3);
 	vForceGenerators.push_back(g1);
+}
 
+void Scene::generateRuberband() {
+	player = new Particle(physx::PxVec3(0, 30, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 1, physx::PxVec4(1, 0, 0, 1), 1000, true);
+	Particle* player2 = new Particle(physx::PxVec3(5, 30, 0), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.87, 1, physx::PxVec4(0, 1, 0, 1), 1000, true);
 
+	RuberbandForceGenerator* rb = new RuberbandForceGenerator(3, 10, player);
+	fg.AddRegistry(rb, player2);
 
+	mParticles.push_back(player);
+	mParticles.push_back(player2);
+}
+
+void Scene::generateWater()
+{
+	Particle* water = new Particle(physx::PxVec3(30, 30, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 1, physx::PxVec4(0, 0, 1, 1), 1000, true);
+	water->setShape(CreateShape(physx::PxBoxGeometry(10, 0.1, 10)));
+	mParticles.push_back(water);
+	// AddPlane(new Plane({ 30, 30, 30 }));
+
+	Particle* cube = new Particle(physx::PxVec3(30, 45, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.8, 1, physx::PxVec4(1, 0, 0, 1), 1000, true);
+
+	cube->setShape(CreateShape(physx::PxBoxGeometry(1, 1, 1)));
+	cube->setMass(1);
+	cube->setIMass((float)1 / cube->getMass());
+
+	GravityForceGenerator* gf = new GravityForceGenerator(physx::PxVec3(0, -3, 0));
+	fg.AddRegistry(gf, cube);
+
+	b = new BuoyancyForceGenerator(water, 0.1, 1000, pow(0.1, 3));
+	fg.AddRegistry(b, cube);
+
+	mParticles.push_back(cube);
 }
 

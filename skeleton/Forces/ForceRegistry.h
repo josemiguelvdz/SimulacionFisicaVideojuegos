@@ -7,7 +7,8 @@
 #include "./TorbellinoForceGenerator.h"
 #include "./ExplosionForceGenerator.h"
 #include "./SpringForceGenerator.h"
-#include "./SlinkyForceGenerator.h"
+#include "./RuberbandForceGenerator.h"
+#include "./BuoyancyForceGenerator.h"
 
 
 #include <unordered_map>;
