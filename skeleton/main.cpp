@@ -73,22 +73,16 @@ void initPhysics(bool interactive)
 	PxPvdTransport* transport = PxDefaultPvdSocketTransportCreate(PVD_HOST, 5425, 10);
 	gPvd->connect(*transport,PxPvdInstrumentationFlag::eALL);
 
-	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
+	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(), true, gPvd);
 
-	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+	// gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
-	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
-	sceneDesc.cpuDispatcher = gDispatcher;
-	sceneDesc.filterShader = contactReportFilterShader;
-	sceneDesc.simulationEventCallback = &gContactReportCallback;
-	gScene = gPhysics->createScene(sceneDesc);
 
 	// Scene Creation
-	mSM = new Scene();
-	}
+	mSM = new Scene(gDispatcher, gPhysics);
+}
 
 
 // Function to configure what happens in each step of physics
@@ -103,8 +97,8 @@ void stepPhysics(bool interactive, double t)
 
 	mSM->Update(t);
 
-	gScene->simulate(t);
-	gScene->fetchResults(true);
+	mSM->getActiveScene()->simulate(t);
+	mSM->getActiveScene()->fetchResults(true);
 
 	clock_t endTime = clock();
 
@@ -120,7 +114,7 @@ void cleanupPhysics(bool interactive)
 	PX_UNUSED(interactive);
 
 	// Rigid Body ++++++++++++++++++++++++++++++++++++++++++
-	gScene->release();
+	mSM->getActiveScene()->release();
 	gDispatcher->release();
 	// -----------------------------------------------------
 	gPhysics->release();	
@@ -130,7 +124,7 @@ void cleanupPhysics(bool interactive)
 	
 	gFoundation->release();
 
-	mSM->ClearScene();
+	// mSM->ClearScene();
 	}
 
 // Function called when a key is pressed
@@ -144,63 +138,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		mSM->LoadScene((int)key - 48);
 	}
 	else {
-		if (key == 'q') {
+		/*if (key == 'q') {
 			mSM->ShootBullet();
-		}
-		if (key == 'r') {
-			mSM->ShootHeavyBullet();
-		}
-		if (key == 'e') {
-			mSM->ShootLightBullet();
-		}
-		if (key == 'f') {
-			mSM->CreateFireWork();
-		}
-		if (key == 'k') { // aumenta el coef. del muelle
-			mSM->addSpringCoef();
-		}
-		if (key == 'l') { // disminuye el coef. del muelle
-			mSM->subSpringCoef();
-		}
-		if (key == 'v') { // aplica viento en un cierto momento
-			mSM->addViento();
-		}
-		if (key == 't') {
-			mSM->subViento();
-		}
-
-
-		// movement para ruberband
-		if (key == 'h') { // up
-			mSM->MovePlayerUp();
-		}
-		if (key == 'b') { // left
-			mSM->MovePlayerLeft();
-		}
-		if (key == 'n') { // down
-			mSM->MovePlayerDown();
-		}
-		if (key == 'm') { // right
-			mSM->MovePlayerRight();
-		}
-
-		if (key == 'o') {
-			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
-			bf->setVolume(bf->getVolume() + 0.01);
-		}
-		if (key == 'p') {
-			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
-			bf->setVolume(bf->getVolume() - 0.01);
-		}
-
-		if (key == 'u') {
-			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
-			bf->setDensity(bf->getDensity() + 0.1);
-		}
-		if (key == 'i') {
-			BuoyancyForceGenerator* bf = mSM->getBuoyancyForceGen();
-			bf->setDensity(bf->getDensity() - 0.1);
-		}
+		}*/
+		
 	}
 }
 

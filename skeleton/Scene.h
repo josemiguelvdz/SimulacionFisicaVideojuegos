@@ -1,117 +1,46 @@
 #pragma once
 
-#include "Particle.h"
-#include "Plane.h"
-#include "ParticleSystem.h"
-#include "GaussianParticleGenerator.h"
-#include "UniformParticleGenerator.h"
-#include "NieveParticleGenerator.h"
-#include "SpaceParticleGenerator.h"
-#include "FireWorkParticleGenerator.h"
+#include "PxPhysicsAPI.h"
+#include "foundation/PxTransform.h"
+#include "RenderUtils.hpp"
+#include "core.hpp"
+#include "callbacks.hpp"
 
-#include "Forces/ForceRegistry.h"
-
-
+#include "./Rigid/RigidParticleGenerator.h"
 
 #include <vector>
 
-using namespace std;
+using namespace physx;
 
 class Scene
 {
 public:
-	Scene();
+	Scene(PxDefaultCpuDispatcher* dispatcher, PxPhysics* physics);
 	~Scene();
 
 	void LoadScene(int newID);
 	void Update(double t);
 
-	int AddParticle(Particle* p);
-	int AddPlane(Plane* p);
-	Particle* GetParticle(int id);
-	bool RemoveParticle(int id);
-	void ClearScene();
+	PxScene* getActiveScene() { return gScene; };
+	PxPhysics* getActivePhysics() { return gPhysics; };
 
-	void ShootBullet();
-	void ShootHeavyBullet();
-	void ShootLightBullet();
+	PxRigidStatic* createRigidStatic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color);
+	PxRigidDynamic* createRigidDynamic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color);
 
-	void CreateFireWork();
-
-	void UpdateSun(Particle* p);
-
-	void generateSpringDemo();
-	void generateSlinky();
-	void generateRuberband();
-	void generateWater();
-
-	void addSpringCoef() { f1->setK(f1->getK() + 1); };
-	void subSpringCoef() { f1->setK(f1->getK() - 1); };
-
-	void addViento() {
-		if (w1 != nullptr)
-			w1->setActive(true);
-	}
-
-	void subViento() {
-		if(w1 != nullptr)
-			w1->setActive(false);
-	}
-
-	void MovePlayerUp() {
-		if (player != nullptr) {
-			player->setPos(player->getPos() + physx::PxVec3(0, 2, 0));
-		}
-	}
-	void MovePlayerDown() {
-		if (player != nullptr) {
-			player->setPos(player->getPos() + physx::PxVec3(0, -2, 0));
-		}
-	}
-	void MovePlayerLeft() {
-		if (player != nullptr) {
-			player->setPos(player->getPos() + physx::PxVec3(-2, 0, 0));
-		}
-	}
-	void MovePlayerRight() {
-		if (player != nullptr) {
-			player->setPos(player->getPos() + physx::PxVec3(2, 0, 0));
-		}
-	}
-
-	BuoyancyForceGenerator* getBuoyancyForceGen() { return b; };
 
 private:
-
+	// Scene
 	int mID = 0;
-	double mGravity = -9.8;
-	vector<Particle*> mParticles;
-	vector<Plane*> mPlanes;
 
-	struct Projectile {
-		double inverseMass; //inversa de la masa
-		double speed; //velocidad
-		double gravity; //gravedad
-		double initialHeight; //altura inicial
-	};
+	std::vector<RenderItem*> gRenderItems;
 
+	PxPhysics* gPhysics = nullptr;
+	PxScene* gScene = nullptr;
+	PxDefaultCpuDispatcher* gDispatcher = nullptr;
 
-	Projectile Simulate(double simulatedVel, Projectile real);
+	ContactReportCallback gContactReportCallback;
 
-	ParticleSystem* pSystem = nullptr;
-	FireWorkParticleGenerator* fw = nullptr;
-
-	vector<ForceGenerator*> vForceGenerators;
-
-	SpringForceGenerator* f1 = nullptr;
-	WindForceGenerator* w1 = nullptr;
-
-	ForceRegistry fg;
-
-	Particle* player = nullptr;
-	
-	BuoyancyForceGenerator* b = nullptr;
-
-
+	// Practica 1
+	RigidParticleGenerator* rGen = nullptr;
 };
 

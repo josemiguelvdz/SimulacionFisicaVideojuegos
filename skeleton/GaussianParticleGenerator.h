@@ -6,6 +6,7 @@ using namespace std;
 class GaussianParticleGenerator : public ParticleGenerator {
 public:
 	GaussianParticleGenerator(physx::PxVec3 stdDevPos, physx::PxVec3 stdDevVel, double media, double desviacion);
+
 	virtual std::list<Particle*> generateParticles() override;
 
 protected:

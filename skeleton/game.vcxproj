@@ -274,6 +274,7 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="Rigid\RigidParticleGenerator.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpaceParticleGenerator.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
@@ -301,6 +302,7 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="Rigid\RigidParticleGenerator.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpaceParticleGenerator.h" />
     <ClInclude Include="UniformParticleGenerator.h" />
