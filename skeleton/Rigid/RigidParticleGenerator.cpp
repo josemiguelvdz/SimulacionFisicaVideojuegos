@@ -28,6 +28,7 @@ std::list<PxActor*> RigidParticleGenerator::generateParticles()
         particle->setLinearVelocity(PxVec3(x(generator), pStdDevVel.y, z(generator)));
 
         particleCounter++;
+
         listaRigids.push_back(particle);
     }
 

@@ -7,6 +7,7 @@
 #include "callbacks.hpp"
 
 #include "./Rigid/RigidParticleGenerator.h"
+#include "./Rigid/RigidForceRegistry.h"
 
 #include <vector>
 
@@ -27,12 +28,15 @@ public:
 	PxRigidStatic* createRigidStatic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color);
 	PxRigidDynamic* createRigidDynamic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color);
 
+	void ActivateTorbellino() { if(!gForceGenerators.empty()) gForceGenerators[0]->setActive(true); }
+	void DeativateTorbellino() { if (!gForceGenerators.empty()) gForceGenerators[0]->setActive(false); }
 
 private:
 	// Scene
 	int mID = 0;
 
 	std::vector<RenderItem*> gRenderItems;
+	std::vector<RigidForceGenerator*> gForceGenerators;
 
 	PxPhysics* gPhysics = nullptr;
 	PxScene* gScene = nullptr;
@@ -42,5 +46,6 @@ private:
 
 	// Practica 1
 	RigidParticleGenerator* rGen = nullptr;
+	RigidForceRegistry* fg = nullptr;
 };
 

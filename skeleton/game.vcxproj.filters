@@ -30,6 +30,8 @@
     <ClCompile Include="Forces\ForceRegistry.cpp" />
     <ClCompile Include="Forces\BuoyancyForceGenerator.cpp" />
     <ClCompile Include="Rigid\RigidParticleGenerator.cpp" />
+    <ClCompile Include="Rigid\RigidTorbellinoFGenerator.cpp" />
+    <ClCompile Include="Rigid\RigidForceRegistry.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -62,6 +64,9 @@
     <ClInclude Include="Forces\ForceRegistry.h" />
     <ClInclude Include="Forces\BuoyancyForceGenerator.h" />
     <ClInclude Include="Rigid\RigidParticleGenerator.h" />
+    <ClInclude Include="Rigid\RigidTorbellinoFGenerator.h" />
+    <ClInclude Include="Rigid\RigidForceRegistry.h" />
+    <ClInclude Include="Rigid\RigidForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

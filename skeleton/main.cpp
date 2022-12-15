@@ -138,10 +138,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		mSM->LoadScene((int)key - 48);
 	}
 	else {
-		/*if (key == 'q') {
-			mSM->ShootBullet();
-		}*/
-		
+		if (key == 'q') 
+			mSM->DeativateTorbellino();
+		if (key == 't')
+			mSM->ActivateTorbellino();
 	}
 }
 

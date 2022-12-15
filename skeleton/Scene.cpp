@@ -5,6 +5,8 @@ Scene::Scene(PxDefaultCpuDispatcher* dispatcher, PxPhysics* physics)
 	gDispatcher = dispatcher;
 	gPhysics = physics;
 
+	fg = new RigidForceRegistry();
+
 	LoadScene(0);
 }
 
@@ -26,6 +28,12 @@ void Scene::LoadScene(int newID)
 		r->release();
 
 	gRenderItems.clear();
+	fg->clear();
+	gForceGenerators.clear();
+
+	delete rGen;
+	rGen = nullptr;
+
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
@@ -36,6 +44,8 @@ void Scene::LoadScene(int newID)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	mID = newID;
+
+	RigidTorbellinoFGenerator* t = nullptr;
 
 	switch (mID) {
 	case 0:
@@ -50,6 +60,13 @@ void Scene::LoadScene(int newID)
 		break;
 	case 1:
 		// createRigidDynamic({ 0, 0, 0 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxSphereGeometry(1));
+		t = new RigidTorbellinoFGenerator({ 30, 30, 30 }, 120, 5);
+		gForceGenerators.push_back(t);
+
+		createRigidStatic({ 30, 30, 30 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxBoxGeometry(60, 0.5, 60), { 0, 1, 0, 1 });
+		createRigidStatic({ 30, 25, 30 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxSphereGeometry(15), { 1, 1, 0, 1 });
+
+		rGen = new RigidParticleGenerator({ 30, 30, 30 }, { 0, 20, 0 }, this);
 		break;
 	case 2:
 		break;
@@ -59,8 +76,10 @@ void Scene::LoadScene(int newID)
 void Scene::Update(double t)
 {
 	// Force Registry u otras cosas
-	if (rGen != nullptr && rGen->getParticleCounter() < 50) // Siendo 50 el limite de particulas
+	if (rGen != nullptr && rGen->getParticleCounter() < 100) // Siendo 100 el limite de particulas
 		rGen->generateParticles();
+
+	fg->Integrate(t);
 }
 
 
@@ -103,6 +122,10 @@ physx::PxRigidDynamic* Scene::createRigidDynamic(const physx::PxVec3& pos, PxMat
 
 	// Add Actor to the scene
 	gScene->addActor(*particle);
+
+	for (auto forceGenerator : gForceGenerators)
+		fg->AddRegistry(forceGenerator, particle);
+
 	return particle;
 }
 
