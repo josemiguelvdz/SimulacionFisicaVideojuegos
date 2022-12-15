@@ -265,6 +265,7 @@
     <ClCompile Include="Forces\TorbellinoForceGenerator.cpp" />
     <ClCompile Include="Forces\WindForceGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
+    <ClCompile Include="ProyectoFinal\GravityField.cpp" />
     <ClCompile Include="NieveParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="Forces\TorbellinoForceGenerator.h" />
     <ClInclude Include="Forces\WindForceGenerator.h" />
     <ClInclude Include="GaussianParticleGenerator.h" />
+    <ClInclude Include="ProyectoFinal\GravityField.h" />
     <ClInclude Include="NieveParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleGenerator.h" />

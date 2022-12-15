@@ -8,6 +8,7 @@
 #include <unordered_map>;
 
 #include "RigidTorbellinoFGenerator.h"
+#include "../ProyectoFinal/GravityField.h"
 
 using namespace physx;
 

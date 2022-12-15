@@ -37,7 +37,7 @@ void Scene::LoadScene(int newID)
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
-	sceneDesc.gravity = PxVec3(0.0f, -9.8f, 0.0f);
+	sceneDesc.gravity = PxVec3(0.0f, 0.0f, 0.0f);
 	sceneDesc.cpuDispatcher = gDispatcher;
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
@@ -45,30 +45,52 @@ void Scene::LoadScene(int newID)
 
 	mID = newID;
 
-	RigidTorbellinoFGenerator* t = nullptr;
-
 	switch (mID) {
 	case 0:
 		/*AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1, 1, { 0,0,1,1 }, 0, true));*/
-		createRigidStatic({ 30, 30, 30 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxBoxGeometry(60, 0.5, 60), { 0, 1, 0, 1 });
 
-		createRigidStatic({ 30, 25, 30 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxSphereGeometry(15), { 1, 1, 0, 1 });
+		// 232, 127, 35
+		PxRigidDynamic* sun = createRigidDynamic({ 0, 0, 0 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(5), { (float)232/255, (float)127 / 255, (float)35 / 255, 1});
+		sun->setAngularDamping(0);
+		sun->setAngularVelocity({ 0, 2*3.14, 0 });
+		//sun->addTorque({ 0.3, 1, -0.3 });
 
-		createRigidStatic({ 10, 50, 30 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxSphereGeometry(10), { 1, 1, 0, 1 });
+		sun->setMass(300);
+		sun->setLinearVelocity({0,0,0});
+		sun->setLinearDamping(0);
 
-		rGen = new RigidParticleGenerator({ 30, 30, 30 }, { 0, 10, 0 }, this);
-		break;
-	case 1:
-		// createRigidDynamic({ 0, 0, 0 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxSphereGeometry(1));
-		t = new RigidTorbellinoFGenerator({ 30, 30, 30 }, 120, 5);
-		gForceGenerators.push_back(t);
+		PxRigidDynamic* earth = createRigidDynamic({ 40, 0, 40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(1.3f), { 0, 0, 1, 1 });
+		earth->setAngularDamping(0);
+		earth->setAngularVelocity({ 0, -2 * 3.14, 0 });
+		earth->setMass(10);
 
-		createRigidStatic({ 30, 30, 30 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxBoxGeometry(60, 0.5, 60), { 0, 1, 0, 1 });
-		createRigidStatic({ 30, 25, 30 }, gPhysics->createMaterial(0.5f, 0.5f, 0.6f), PxSphereGeometry(15), { 1, 1, 0, 1 });
+		earth->setLinearDamping(0);
 
-		rGen = new RigidParticleGenerator({ 30, 30, 30 }, { 0, 20, 0 }, this);
-		break;
-	case 2:
+		PxRigidDynamic* mars = createRigidDynamic({ -70, 0, 40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(1), { 1, 0, 0, 1 });
+		mars->setAngularDamping(0);
+		mars->setAngularVelocity({ 0, -2 * 3.14, 0 });
+		mars->setMass(5);
+
+		mars->setLinearDamping(0);
+
+		GravityField* gField = new GravityField(earth, sun, true);
+		fg->AddRegistry(gField, earth);
+
+		GravityField* gField2 = new GravityField(sun, earth, false);
+		fg->AddRegistry(gField2, sun);
+
+		GravityField* gField3 = new GravityField(mars, sun, true);
+		fg->AddRegistry(gField3, mars);
+
+		GravityField* gField4 = new GravityField(mars, earth, false);
+		fg->AddRegistry(gField4, mars);
+
+		GravityField* gField5 = new GravityField(earth, mars, false);
+		fg->AddRegistry(gField5, earth);
+
+		GravityField* gField6 = new GravityField(sun, mars, false);
+		fg->AddRegistry(gField6, sun);
+
 		break;
 	}
 }
