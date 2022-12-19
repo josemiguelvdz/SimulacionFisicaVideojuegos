@@ -1,7 +1,7 @@
 #include "GravityField.h"
 #include <iostream>
 
-GravityField::GravityField(PxRigidDynamic* _body1, PxRigidDynamic* _body2, bool hasInitialVelocity)
+GravityField::GravityField(PxRigidDynamic* _body1, PxRigidDynamic* _body2, bool hasInitialVelocity, float iniVel)
 {
 	body1 = _body1;
 	body2 = _body2;

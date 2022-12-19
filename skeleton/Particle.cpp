@@ -11,6 +11,7 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, doub
 	mDamping = damping;
 
 	mInverseMass = 1;
+	mMass = 1;
 
 	mColor = color;
 
@@ -34,6 +35,8 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, bool staticParticle)
 	mVelocity = vel;
 
 	mAlive = true;
+
+	mMass = 1;
 
 	mStaticParticle = staticParticle;
 	mMaxLifeTime = clock() + 10000;

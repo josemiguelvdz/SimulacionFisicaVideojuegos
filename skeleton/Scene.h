@@ -8,6 +8,8 @@
 
 #include "./Rigid/RigidParticleGenerator.h"
 #include "./Rigid/RigidForceRegistry.h"
+#include "./ParticleSystem.h"
+#include "./SpaceParticleGenerator.h"
 
 #include <vector>
 
@@ -47,5 +49,8 @@ private:
 	// Practica 1
 	RigidParticleGenerator* rGen = nullptr;
 	RigidForceRegistry* fg = nullptr;
+
+	// PFinal
+	ParticleSystem* pSystem = nullptr;
 };
 

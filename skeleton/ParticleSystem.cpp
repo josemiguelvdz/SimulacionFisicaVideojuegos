@@ -6,7 +6,7 @@
 ParticleSystem::ParticleSystem()
 {
 	// basic
-	gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -30, 0));
+	// gForceGenerator = new GravityForceGenerator(physx::PxVec3(0, -0.3, 0));
 	// dForceGenerator = new ParticleDragGenerator(0.03, 0);
 	// wForceGenerator = new WindForceGenerator(physx::PxVec3(-10, 0, 0));
 

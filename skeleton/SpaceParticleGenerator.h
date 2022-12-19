@@ -19,4 +19,7 @@ protected:
 
 	random_device rand;
 	default_random_engine generator = default_random_engine(rand());
+
+	int cont = 0;
+	int pLimit = 300;
 };
