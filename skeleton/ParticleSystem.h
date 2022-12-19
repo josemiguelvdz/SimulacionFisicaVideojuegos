@@ -20,6 +20,8 @@ public:
 	ParticleGenerator* getParticleGenerator(std::string name);
 	void addParticleGenerator(ParticleGenerator* pGenerator);
 
+	std::list<Particle*> getParticles() { return mParticles; };
+
 	
 	// Fireworks
 	// void generateFireworkSytem();

@@ -23,7 +23,7 @@ std::list<PxActor*> RigidParticleGenerator::generateParticles()
         // todo: particles
         PxVec3 material = PxVec3(x(generator), y(generator), z(generator)).getNormalized();
         PxRigidDynamic* particle = mScene->createRigidDynamic(pStdDevPos, 
-            mScene->getActivePhysics()->createMaterial(abs(material.x), abs(material.y), abs(material.z)), PxSphereGeometry(0.4), { 0, 0, 1, 1 });
+            mScene->getActivePhysics()->createMaterial(abs(material.x), abs(material.y), abs(material.z)), PxSphereGeometry(0.4), { 0, 0, 1, 1 }, INT_MAX);
 
         particle->setLinearVelocity(PxVec3(x(generator), pStdDevVel.y, z(generator)));
 

@@ -80,7 +80,6 @@ void initPhysics(bool interactive)
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 
-	// Scene Creation
 	mSM = new Scene(gDispatcher, gPhysics);
 }
 
@@ -96,9 +95,6 @@ void stepPhysics(bool interactive, double t)
 	PX_UNUSED(interactive);
 
 	mSM->Update(t);
-
-	mSM->getActiveScene()->simulate(t);
-	mSM->getActiveScene()->fetchResults(true);
 
 	clock_t endTime = clock();
 
@@ -138,15 +134,33 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		mSM->LoadScene((int)key - 48);
 	}
 	else {
-		if (key == 'q') 
+		/*if (key == 'q') 
 			mSM->DeativateTorbellino();
 		if (key == 't')
-			mSM->ActivateTorbellino();
+			mSM->ActivateTorbellino();*/
 	}
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
+
+	RigidInfo* newInfo = new RigidInfo();
+
+	if ( ((PxRigidDynamic*) actor1)->getMass() > ((PxRigidDynamic*)actor2)->getMass()) {
+		// sobrevive body1
+		PxRigidDynamic* body2 = (PxRigidDynamic*)actor2;
+		newInfo->pStatus = S_DEAD;
+
+		body2->userData = newInfo;
+	}
+	else {
+		// sobrevive body2
+		PxRigidDynamic* body1 = (PxRigidDynamic*)actor1;
+		newInfo->pStatus = S_DEAD;
+
+		body1->userData = newInfo;
+	}
+
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);
 }

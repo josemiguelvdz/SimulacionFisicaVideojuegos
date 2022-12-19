@@ -33,6 +33,7 @@
     <ClCompile Include="Rigid\RigidTorbellinoFGenerator.cpp" />
     <ClCompile Include="Rigid\RigidForceRegistry.cpp" />
     <ClCompile Include="ProyectoFinal\GravityField.cpp" />
+    <ClCompile Include="ProyectoFinal\PoolObjects.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -69,10 +70,16 @@
     <ClInclude Include="Rigid\RigidForceRegistry.h" />
     <ClInclude Include="Rigid\RigidForceGenerator.h" />
     <ClInclude Include="ProyectoFinal\GravityField.h" />
+    <ClInclude Include="ProyectoFinal\PoolObjects.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ProyectoFinal\RigidInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
       <UniqueIdentifier>{d04b4f9f-5a69-465e-8070-25c6d0bcd3c2}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc" />
   </ItemGroup>
 </Project>

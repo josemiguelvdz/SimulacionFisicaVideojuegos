@@ -11,9 +11,40 @@
 #include "./ParticleSystem.h"
 #include "./SpaceParticleGenerator.h"
 
+#include "./ProyectoFinal/PoolObjects.h"
+
 #include <vector>
 
 using namespace physx;
+
+
+/* Robacion de codigo ajajjaj
+
+bool pointSphere(Vector3 pointPos, const physx::PxTransform* sphereTransform) {
+		return EXP_SPHERE_RADIUS > sqrt(pow(pointPos.x - sphereTransform->p.x, 2) + pow(pointPos.y - sphereTransform->p.y, 2) + pow(pointPos.z - sphereTransform->p.z, 2));
+	}
+
+public:
+
+	ParticleExplosion(float force, RenderItem* eS) : expSphere(eS), f(force){}
+
+	virtual void updateForce(Particula* particle, float t) {
+		if (!explota) return;
+		if (!particle->hasFiniteMass()) return;
+
+		if (pointSphere(particle->getPosition(), expSphere->transform)) {
+			Vector3 dir = particle->getPosition() - sphereExpPosition;
+			float dist = dir.normalize();
+
+			float force = (EXP_SPHERE_RADIUS - dist) / EXP_SPHERE_RADIUS * f;
+
+			particle->addForce(dir * force / t);
+		}
+
+		explota = false;
+		
+		
+		*/
 
 class Scene
 {
@@ -28,17 +59,13 @@ public:
 	PxPhysics* getActivePhysics() { return gPhysics; };
 
 	PxRigidStatic* createRigidStatic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color);
-	PxRigidDynamic* createRigidDynamic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color);
+	PxRigidDynamic* createRigidDynamic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color, double lifeTime);
 
-	void ActivateTorbellino() { if(!gForceGenerators.empty()) gForceGenerators[0]->setActive(true); }
-	void DeativateTorbellino() { if (!gForceGenerators.empty()) gForceGenerators[0]->setActive(false); }
+	PoolObjects* getPoolObjects() { return pPoolObjects; };
 
 private:
 	// Scene
 	int mID = 0;
-
-	std::vector<RenderItem*> gRenderItems;
-	std::vector<RigidForceGenerator*> gForceGenerators;
 
 	PxPhysics* gPhysics = nullptr;
 	PxScene* gScene = nullptr;
@@ -46,11 +73,10 @@ private:
 
 	ContactReportCallback gContactReportCallback;
 
-	// Practica 1
-	RigidParticleGenerator* rGen = nullptr;
-	RigidForceRegistry* fg = nullptr;
-
 	// PFinal
 	ParticleSystem* pSystem = nullptr;
+	PoolObjects* pPoolObjects = nullptr;
+
+	int rigidCont = 0;
 };
 

@@ -265,6 +265,7 @@
     <ClCompile Include="Forces\TorbellinoForceGenerator.cpp" />
     <ClCompile Include="Forces\WindForceGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
+    <ClCompile Include="ProyectoFinal\PoolObjects.cpp" />
     <ClCompile Include="ProyectoFinal\GravityField.cpp" />
     <ClCompile Include="NieveParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -283,6 +284,8 @@
     <ClCompile Include="UniformParticleGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ProyectoFinal\RigidInfo.h" />
+    <ClInclude Include="ProyectoFinal\PoolObjects.h" />
     <ClInclude Include="Forces\BuoyancyForceGenerator.h" />
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
@@ -306,6 +309,7 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Rigid\RigidForceGenerator.h" />
     <ClInclude Include="Rigid\RigidForceRegistry.h" />
     <ClInclude Include="Rigid\RigidParticleGenerator.h" />
@@ -313,6 +317,9 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpaceParticleGenerator.h" />
     <ClInclude Include="UniformParticleGenerator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
