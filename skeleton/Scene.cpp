@@ -1,13 +1,14 @@
 #include "Scene.h"
 
-Scene::Scene(PxDefaultCpuDispatcher* dispatcher, PxPhysics* physics)
+Scene::Scene(PxDefaultCpuDispatcher* dispatcher, PxPhysics* physics, Camera* camera)
 {
 	gDispatcher = dispatcher;
 	gPhysics = physics;
+	mCamera = camera;
 
 	pPoolObjects = new PoolObjects();
 
-	LoadScene(0);
+	LoadScene(3);
 }
 
 Scene::~Scene()
@@ -34,12 +35,11 @@ void Scene::LoadScene(int newID)
 	//gForceGenerators.clear();
 
 	if (pSystem != nullptr) {
-		for (auto it : pSystem->getParticles())
-			delete it;
+		delete pSystem;
+		pSystem = nullptr;
 
-		pSystem->getParticles().clear();	
+		// pSystem->getParticles().clear();	
 	}
-		
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
@@ -56,10 +56,13 @@ void Scene::LoadScene(int newID)
 	switch (mID) {
 	case 0:
 	{
+		mCamera = new Camera(PxVec3(0.0f, 150.0f, 0.0f), PxVec3(0.02f, -0.99f, 0.02f));
+		SetCamera(mCamera);
+
 		/*AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1, 1, { 0,0,1,1 }, 0, true));*/
 
 		// 232, 127, 35
-		PxRigidDynamic* sun = createRigidDynamic({ 0, 0, 0 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(5), { (float)232/255, (float)127 / 255, (float)35 / 255, 1}, INT_MAX);
+		PxRigidDynamic* sun = createRigidDynamic({ 0, 0, 0 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(5), { (float)232/255, (float)127 / 255, (float)35 / 255, 1}, INT_MAX, 5);
 		sun->setAngularDamping(0);
 		sun->setAngularVelocity({ 0, 1, 0 });
 		//sun->addTorque({ 0.3, 1, -0.3 });
@@ -68,21 +71,23 @@ void Scene::LoadScene(int newID)
 		sun->setLinearVelocity({0,0,0});
 		sun->setLinearDamping(0);
 
-		PxRigidDynamic* earth = createRigidDynamic({ 55, 0, 40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(1.7f), { 0, 0, 1, 1 }, INT_MAX);
+		sun->setName("Sun");
+
+		PxRigidDynamic* earth = createRigidDynamic({ 55, 0, 40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(1.7f), { 0, 0, 1, 1 }, INT_MAX, 1.7f);
 		earth->setAngularDamping(0);
 		earth->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		earth->setMass(10);
 
 		earth->setLinearDamping(0);
 
-		PxRigidDynamic* mars = createRigidDynamic({ 50, 0, -40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.8), { 1, 0, 0, 1 }, INT_MAX);
+		PxRigidDynamic* mars = createRigidDynamic({ 50, 0, -40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.8f), { 1, 0, 0, 1 }, INT_MAX, 0.8f);
 		mars->setAngularDamping(0);
 		mars->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		mars->setMass(0.2);
 
 		mars->setLinearDamping(0);
 
-		PxRigidDynamic* pluto = createRigidDynamic({ 5, 0, 10 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.6), { 0, 1, 0, 1 }, INT_MAX);
+		PxRigidDynamic* pluto = createRigidDynamic({ 5, 0, 10 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.6f), { 0, 1, 0, 1 }, INT_MAX, 0.6f);
 		pluto->setAngularDamping(0);
 		pluto->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		pluto->setMass(0.1);
@@ -151,19 +156,22 @@ void Scene::LoadScene(int newID)
 		/// STARS
 		pSystem = new ParticleSystem();
 
-		SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(200, 0, 200), physx::PxVec3(0, 0, 0));
+		SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(200, -500, 200), physx::PxVec3(0, 0, 0));
 		stars->setMeanParticles(2);
 		stars->setParticle(new Particle({ 2000, 0, 2000 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 15000, true));
 
 		pSystem->addParticleGenerator(stars);
-
 	}
 		break;
 
 	case 1:
+		
 		/*AddParticle(new Particle({ 0, 0, 0 }, { 0, 10, 0 }, { 0, 0, 0 }, 1, 1, { 0,0,1,1 }, 0, true));*/
 	{
-		PxRigidDynamic * sun = createRigidDynamic({ 0, 0, 0 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(5), { (float)232 / 255, (float)127 / 255, (float)35 / 255, 1 }, INT_MAX);
+		mCamera = new Camera(PxVec3(0.0f, 150.0f, 0.0f), PxVec3(0.02f, -0.99f, 0.02f));
+		SetCamera(mCamera);
+
+		PxRigidDynamic * sun = createRigidDynamic({ 0, 0, 0 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(5.f), { (float)232 / 255, (float)127 / 255, (float)35 / 255, 1 }, INT_MAX, 5.f);
 		sun->setAngularDamping(0);
 		sun->setAngularVelocity({ 0, 1, 0 });
 		//sun->addTorque({ 0.3, 1, -0.3 });
@@ -172,21 +180,23 @@ void Scene::LoadScene(int newID)
 		sun->setLinearVelocity({ 0,0,0 });
 		sun->setLinearDamping(0);
 
-		PxRigidDynamic* earth = createRigidDynamic({ 30, 0, 40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(1.3f), { 0, 0, 1, 1 }, INT_MAX);
+		sun->setName("Sun");
+
+		PxRigidDynamic* earth = createRigidDynamic({ 30, 0, 40 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(1.3f), { 0, 0, 1, 1 }, INT_MAX, 1.3f);
 		earth->setAngularDamping(0);
 		earth->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		earth->setMass(10);
 
 		earth->setLinearDamping(0);
 
-		PxRigidDynamic* mars = createRigidDynamic({ -10, 0, -15 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.8), { 1, 0, 0, 1 }, INT_MAX);
+		PxRigidDynamic* mars = createRigidDynamic({ -10, 0, -15 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.8f), { 1, 0, 0, 1 }, INT_MAX, 0.8f);
 		mars->setAngularDamping(0);
 		mars->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		mars->setMass(0.2);
 
 		mars->setLinearDamping(0);
 
-		PxRigidDynamic* pluto = createRigidDynamic({ 10, 0, 15 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.6), { 0, 1, 0, 1 }, INT_MAX);
+		PxRigidDynamic* pluto = createRigidDynamic({ 10, 0, 15 }, gPhysics->createMaterial(0.0f, 0.0f, 0.0f), PxSphereGeometry(0.6f), { 0, 1, 0, 1 }, INT_MAX, 0.6f);
 		pluto->setAngularDamping(0);
 		pluto->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		pluto->setMass(0.1);
@@ -254,14 +264,139 @@ void Scene::LoadScene(int newID)
 		/// STARS
 		pSystem = new ParticleSystem();
 
-		SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(200, 0, 200), physx::PxVec3(0, 0, 0));
+		SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(200, -500, 200), physx::PxVec3(0, 0, 0));
 		stars->setMeanParticles(2);
-		stars->setParticle(new Particle({ 2000, 0, 2000 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 15000, true));
+		stars->setParticle(new Particle({ 2000, 0, 2000 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 1.f, true));
 
 		pSystem->addParticleGenerator(stars);
 
 	}
 		break;
+
+	case 2:
+	{
+		// Interior de un planeta
+		// Camara
+		mCamera = new Camera({ 50, 60, 50 }, { -0.6f, -0.2f, -0.7f });
+		SetCamera(mCamera);
+
+		// Gravedad
+		gScene->setGravity({ 0, -9.8, 0 });
+
+		// Water
+		Particle* water = new Particle(physx::PxVec3(30, 45, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 1, physx::PxVec4(0, 0, 1, 1), 1.f, true);
+		water->setShape(CreateShape(physx::PxBoxGeometry(1000, 0.1, 1000)));
+
+		Particle* waterDec = new Particle(physx::PxVec3(30, -200, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 1, physx::PxVec4(0, 0, 1, 1), 1.f, true);
+		waterDec->setShape(CreateShape(physx::PxBoxGeometry(10000, 1, 10000)));
+
+		// Particle System
+		pSystem = new ParticleSystem();
+		pSystem->addParticle(water);
+		pSystem->addParticle(waterDec);
+
+		//// Cubo Test
+		Particle* cube = new Particle(physx::PxVec3(30, 60, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.8, 1, physx::PxVec4(1, 0, 0, 1), 20.f, false);
+		cube->setShape(CreateShape(physx::PxBoxGeometry(1, 1, 1)));
+		cube->setMass(1);
+		cube->setIMass((float)1 / cube->getMass());
+
+		pSystem->addParticle(cube);
+
+		// Forces
+
+		gf = new GravityForceGenerator(physx::PxVec3(0, -10, 0));
+		pSystem->getForceRegistry()->AddRegistry(gf, cube);
+
+		w = new WindForceGenerator(physx::PxVec3(-5, 0, -5));
+		pSystem->getForceRegistry()->AddRegistry(w, cube);
+
+		b = new BuoyancyForceGenerator(water, 0.1, 5000, pow(0.1, 3));
+		pSystem->getForceRegistry()->AddRegistry(b, cube);
+
+
+		// Tornados
+		generateTornados({ -40, 40, -40 }, 1);
+		generateTornados({ -40, 40, -250 }, -1);
+		//generateTornados({ -200, -20, -150 });
+
+		pSystem->InitTornados();
+
+		pSystem->addCubeToTornado(cube);
+
+		/// STARS
+
+		SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(100, 400, 100), physx::PxVec3(0, 0, 0));
+		stars->setMeanParticles(3);
+		stars->setParticle(new Particle({ 2000, 0, 2000 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 1.f, true));
+
+		pSystem->addParticleGenerator(stars);
+
+	}
+		break;
+	case 3:
+	{
+		// Bajo el agua
+		// Camara
+		mCamera = new Camera({ -70, 40, -360 }, { 0.1f, -0.1f, 0.6f });
+		SetCamera(mCamera);
+
+		// Gravedad
+		gScene->setGravity({ 0, -9.8, 0 });
+
+		// Water
+		Particle* water = new Particle(physx::PxVec3(30, 40, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 1, physx::PxVec4(0, 0, 1, 1), 1.f, true);
+		water->setShape(CreateShape(physx::PxBoxGeometry(1000, 0.01, 1000)));
+
+		Particle* waterDec = new Particle(physx::PxVec3(30, -100, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 1, 1, physx::PxVec4(0, 0, 1, 1), 1.f, true);
+		waterDec->setShape(CreateShape(physx::PxBoxGeometry(10000, 3, 10000)));
+
+
+		// Particle System
+		pSystem = new ParticleSystem();
+		pSystem->addParticle(waterDec);
+		pSystem->addParticle(water);
+
+		//// Cubo Test
+		//Particle* cube = new Particle(physx::PxVec3(30, 60, 30), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.5, 1, physx::PxVec4(1, 0, 0, 1), 20.f, false);
+		//cube->setShape(CreateShape(physx::PxBoxGeometry(1, 1, 1)));
+		//cube->setMass(1);
+		//cube->setIMass((float)1 / cube->getMass());
+
+		//pSystem->addParticle(cube);
+
+		
+		PxRigidDynamic* test = createRigidDynamic({ -60, 40, -350 }, gPhysics->createMaterial(0.f, 0.f, 0.f), PxSphereGeometry(2), { 1, 0, 0, 1 }, 20.f, 2);
+
+		// Forces
+
+		w = new WindForceGenerator(physx::PxVec3(-5, 0, -5));
+		// pPoolObjects->getForceRegistry()->AddRegistry(w, test);
+
+		//b = new BuoyancyForceGenerator(water, 0.1, 2500, pow(0.1, 3));
+
+
+
+		// Tornados
+		generateTornados({ -40, 40, -40 }, 1);
+		generateTornados({ -40, 40, -250 }, -1);
+		//generateTornados({ -200, -20, -150 });
+
+		pSystem->InitTornados();
+
+		//pSystem->addCubeToTornado(cube);
+
+		/// STARS
+
+		SpaceParticleGenerator* stars = new SpaceParticleGenerator(physx::PxVec3(100, 400, 100), physx::PxVec3(0, 0, 0));
+		stars->setMeanParticles(3);
+		stars->setParticle(new Particle({ 2000, 0, 2000 }, { 0, 0, 0 }, { 0, -.1, 0 }, 1, 0.5, { 1, 1, 0.7, 1 }, 1, true));
+
+		pSystem->addParticleGenerator(stars);
+
+	}
+		break;
+
 	}
 }
 
@@ -302,7 +437,7 @@ physx::PxRigidStatic* Scene::createRigidStatic(const physx::PxVec3& pos, PxMater
 	return particle;
 }
 
-physx::PxRigidDynamic* Scene::createRigidDynamic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color, double lifeTime)
+physx::PxRigidDynamic* Scene::createRigidDynamic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color, double lifeTime, float scale)
 {
 	// Create Rigid Dynamic
 	physx::PxRigidDynamic* particle = gPhysics->createRigidDynamic(physx::PxTransform(pos));
@@ -316,6 +451,7 @@ physx::PxRigidDynamic* Scene::createRigidDynamic(const physx::PxVec3& pos, PxMat
 	RigidInfo* newInfo = new RigidInfo();
 	newInfo->actLifeTime = 0;
 	newInfo->maxLifeTime = lifeTime;
+	newInfo->scale = scale;
 	newInfo->pStatus = S_ACTIVE;
 
 	particle->userData = (void*) newInfo;
@@ -331,5 +467,65 @@ physx::PxRigidDynamic* Scene::createRigidDynamic(const physx::PxVec3& pos, PxMat
 	gScene->addActor(*particle);
 
 	return particle;
+}
+
+void Scene::generateTornados(physx::PxVec3 tornadoPos, int sentido)
+{
+	// Tornados
+
+	UniformParticleGenerator* uniform = new UniformParticleGenerator(tornadoPos, physx::PxVec3(0, 20 * sentido, 0));
+	uniform->setName("FUENTE");
+
+	uniform->setMeanParticles(1);
+	Particle* prefab = new Particle({ -40, -20, -40 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 4.5f, true);
+	uniform->setParticle(prefab);
+	pSystem->addParticle(prefab);
+
+	pSystem->addParticleGenerator(uniform);
+
+	// Tornado 2
+	physx::PxVec3 iniPos;
+	if (sentido < 0)
+		iniPos = physx::PxVec3(tornadoPos.x, tornadoPos.y, tornadoPos.z);
+	else
+		iniPos = physx::PxVec3(tornadoPos.x, tornadoPos.y + 20, tornadoPos.z);
+
+	UniformParticleGenerator* uniform2 = new UniformParticleGenerator(iniPos, physx::PxVec3(0, 15 * sentido, 0));
+	uniform2->setName("FUENTE");
+
+	uniform2->setMeanParticles(1);
+	Particle* prefab2 = new Particle({ -40, 50, -40 }, { 0, 0, 0 }, { 0, 0, 0 }, 1, 0.6, { 0,0,1,1 }, 4.f, true);
+	uniform2->setParticle(prefab2);
+	pSystem->addParticle(prefab2);
+
+	pSystem->addParticleGenerator(uniform2); 
+
+	// Tornado 3
+}
+
+void Scene::generateCube()
+{
+	// Generar un cubo
+	int posX = std::rand() % (50 - 10 + 1) + 10;
+	int posY = std::rand() % (70 - 55 + 1) + 55;
+	int posZ = std::rand() % (50 - 10 + 1) + 10;
+
+	int mass = std::rand() % (10 - 1 + 1) + 1;
+
+	Particle* cube = new Particle(physx::PxVec3(posX, posY, posZ), physx::PxVec3(0, 0, 0), physx::PxVec3(0, 0, 0), 0.8, 1, physx::PxVec4(1, 0, 0, 1), 20.f, false);
+	cube->setShape(CreateShape(physx::PxBoxGeometry(1, 1, 1)));
+	cube->setMass(mass);
+	cube->setIMass((float)1 / mass);
+
+	pSystem->addParticle(cube);
+
+	// Forces
+	pSystem->getForceRegistry()->AddRegistry(gf, cube);
+	pSystem->getForceRegistry()->AddRegistry(w, cube);
+	pSystem->getForceRegistry()->AddRegistry(b, cube);
+
+
+	pSystem->addCubeToTornado(cube);
+
 }
 

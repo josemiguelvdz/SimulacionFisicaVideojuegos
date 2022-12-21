@@ -94,7 +94,6 @@ void renderCallback()
 #else
 	stepPhysics(true, t);
 #endif
-
 	startRender(sCamera->getEye(), sCamera->getDir());
 
 	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
@@ -137,7 +136,7 @@ void exitCallback(void)
 void renderLoop()
 {
 	StartCounter();
-	sCamera = new Camera(PxVec3(0.0f, 150.0f, 0.0f), PxVec3(-0.6f,-0.2f,-0.7f));
+	sCamera = new Camera(PxVec3(0.0f, 150.0f, 0.0f), PxVec3(0.02f, -0.99f, 0.02f));
 
 	setupDefaultWindow("Simulacion Fisica Videojuegos");
 	setupDefaultRenderState();
@@ -175,6 +174,10 @@ double GetLastTime()
 Camera* GetCamera()
 {
 	return sCamera;
+}
+
+void SetCamera(Camera* newCam) {
+	sCamera = newCam;
 }
 
 PxShape* CreateShape(const PxGeometry& geo)

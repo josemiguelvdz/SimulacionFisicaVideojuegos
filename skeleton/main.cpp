@@ -80,7 +80,7 @@ void initPhysics(bool interactive)
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	gDispatcher = PxDefaultCpuDispatcherCreate(2);
 
-	mSM = new Scene(gDispatcher, gPhysics);
+	mSM = new Scene(gDispatcher, gPhysics, GetCamera());
 }
 
 
@@ -134,6 +134,23 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		mSM->LoadScene((int)key - 48);
 	}
 	else {
+		if (key == 43) { // '+'
+			// Aumentar masa SOL
+			PxRigidDynamic* sun = mSM->getPoolObjects()->getSun();
+			if (sun != nullptr)
+				sun->setMass(sun->getMass() + 20);
+		}
+		if (key == 45) { // '-'
+			// Disminuir masa SOL
+			PxRigidDynamic* sun = mSM->getPoolObjects()->getSun();
+			if (sun != nullptr)
+				sun->setMass(sun->getMass() - 20);
+		}
+		if (key == 'c') // Generar Cubo en Tornado
+			mSM->generateCube();
+		if (key == 'r') // Generar Solido Rigido en Torbellino hacia abajo
+			mSM->generateCube();
+
 		/*if (key == 'q') 
 			mSM->DeativateTorbellino();
 		if (key == 't')
@@ -143,23 +160,50 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
+	// Si la escena del espacio está activa y además, está vivo
+	if (mSM->getID() < 2 && ((RigidInfo*)actor1->userData)->pStatus == S_ACTIVE && ((RigidInfo*)actor2->userData)->pStatus == S_ACTIVE) {
+		RigidInfo* newInfo = new RigidInfo();
+		
+		float m1 = ((PxRigidDynamic*)actor1)->getMass();
+		float m2 = ((PxRigidDynamic*)actor2)->getMass();
+		if (m1 > m2) {
+			// sobrevive body1
+			PxRigidDynamic* body2 = (PxRigidDynamic*)actor2;
+			float b2Scale = ((RigidInfo*)body2->userData)->scale;
 
-	RigidInfo* newInfo = new RigidInfo();
+			newInfo->pStatus = S_DEAD;
+			body2->userData = newInfo;
 
-	if ( ((PxRigidDynamic*) actor1)->getMass() > ((PxRigidDynamic*)actor2)->getMass()) {
-		// sobrevive body1
-		PxRigidDynamic* body2 = (PxRigidDynamic*)actor2;
-		newInfo->pStatus = S_DEAD;
+			// Aumentar Escala
+			PxRigidDynamic* body1 = (PxRigidDynamic*)actor1;
+			((RigidInfo*)body1->userData)->scale += b2Scale;
 
-		body2->userData = newInfo;
+			RenderItem* i = mSM->getPoolObjects()->getRenderItem(body1);
+			i->shape = CreateShape(PxSphereGeometry(((RigidInfo*)body1->userData)->scale));
+
+			// Explode
+			mSM->getPSystem()->planetExplosion(body2->getGlobalPose().p, body2->getLinearVelocity(), b2Scale);
+		}
+		else {
+			// sobrevive body2
+			PxRigidDynamic* body1 = (PxRigidDynamic*)actor1;
+			float b1Scale = ((RigidInfo*)body1->userData)->scale;
+
+			newInfo->pStatus = S_DEAD;
+			body1->userData = newInfo;
+
+			// Aumentar Escala
+			PxRigidDynamic* body2 = (PxRigidDynamic*)actor2;
+			((RigidInfo*)body2->userData)->scale += b1Scale;
+
+			RenderItem* i = mSM->getPoolObjects()->getRenderItem(body2);
+			i->shape = CreateShape(PxSphereGeometry(((RigidInfo*)body2->userData)->scale));
+
+			// Explode
+			mSM->getPSystem()->planetExplosion(body1->getGlobalPose().p, body1->getLinearVelocity(), b1Scale);
+		}
 	}
-	else {
-		// sobrevive body2
-		PxRigidDynamic* body1 = (PxRigidDynamic*)actor1;
-		newInfo->pStatus = S_DEAD;
-
-		body1->userData = newInfo;
-	}
+	
 
 	PX_UNUSED(actor1);
 	PX_UNUSED(actor2);

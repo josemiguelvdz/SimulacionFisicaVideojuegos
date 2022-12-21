@@ -54,6 +54,16 @@ private:
 	// Forces
 	bool canRecForce = true;
 
+	// FW
+	bool bFirework = false;
+
+	// T
+	bool bTornado = false;
+
+	// Scale
+	float mScale = 0;
+	float mIniScale = mScale;
+
 public:
 	// Constructor
 	Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, double damping, float scale, physx::PxVec4 color, float lifeTime, bool staticParticle);
@@ -97,7 +107,12 @@ public:
 	Particle* setShape(physx::PxShape* shape);
 	Particle* setLifeTime(float lifeTime);
 	Particle* setAlpha(float alpha);
+
 	Particle* setScale(float scale);
+	float getScale() { return mScale; };
+
+	float getIniScale() { return mIniScale; };
+
 
 	Particle* setWindFriction(double friction) { mWindFriction = friction; };
 	Particle* setWindFriction2(double friction2) { mWindFriction2 = friction2; };
@@ -109,6 +124,14 @@ public:
 	void addForce(const physx::PxVec3& f);
 
 	void setCanRecForce(bool recForce) { canRecForce = recForce; };
+
+	void setFireWork(bool fw) { bFirework = fw; };
+	bool isFirework() { return bFirework; };
+
+	void setAffectedByTornado(bool t) { bTornado = t; };
+	bool isAffectedByTornado() { return bTornado; };
+
+	void setStaticParticle(bool state) { mStaticParticle = state; }
 
 };
 

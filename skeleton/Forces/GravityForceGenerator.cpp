@@ -1,4 +1,5 @@
 #include "GravityForceGenerator.h"
+#include <iostream>
 
 GravityForceGenerator::GravityForceGenerator(const physx::PxVec3& g)
 {
@@ -11,6 +12,8 @@ void GravityForceGenerator::updateForce(Particle* particle, double t)
 		if (fabs(particle->getIMass()) < 1e-10)
 			return;
 
-		particle->addForce(mGravity * particle->getMass());
+		physx::PxVec3 force = { mGravity * particle->getMass() };
+		/*std::cout << "gravity : " << force.x << " " << force.y << " " << force.z << std::endl;*/
+		particle->addForce(force);
 	}
 }

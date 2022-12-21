@@ -22,21 +22,23 @@ public:
 	void clearScene();
 
 	void addRenderItem(PxRigidDynamic* p, RenderItem* i);
-	
 	void deleteRenderItem(PxRigidDynamic* p);
+	RenderItem* getRenderItem(PxRigidDynamic* p);
 
 	RigidForceRegistry* getForceRegistry() { return mForceRegistry; };
+
+	PxRigidDynamic* getSun();
+
+
 	void setActiveScene(PxScene* scene) { mActiveScene = scene; }
 
 	void checkIfDead();
 	void addLifeTime(double t);
+	void explode(PxVec3 iniPos);
 	
 private:
 	mapRenderItems mRenderItemsMap;
-
 	RigidForceRegistry* mForceRegistry = nullptr;
-
 	PxScene* mActiveScene = nullptr;
-
 };
 

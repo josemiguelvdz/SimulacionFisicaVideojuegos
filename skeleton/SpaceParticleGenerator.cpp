@@ -21,7 +21,7 @@ std::list<Particle*> SpaceParticleGenerator::generateParticles()
         // todo: particles
         if (rand() % 2 == 0 && cont < pLimit) {
             Particle* p = new Particle(mModel);
-            p->setPos(physx::PxVec3(pos(generator) * pStdDevPos.x, -500, pos(generator) * pStdDevPos.z));
+            p->setPos(physx::PxVec3(pos(generator) * pStdDevPos.x, pStdDevPos.y, pos(generator) * pStdDevPos.z));
 
             p->setVel(physx::PxVec3(x(generator) + pStdDevVel.x, y(generator) + pStdDevVel.y, x(generator) + pStdDevVel.z));
 

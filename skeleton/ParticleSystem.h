@@ -2,13 +2,9 @@
 #include <random>
 
 #include "ParticleGenerator.h"
-#include "./Forces/GravityForceGenerator.h"
-#include "./Forces/ParticleDragGenerator.h"
-#include "./Forces/WindForceGenerator.h"
-#include "./Forces/TorbellinoForceGenerator.h"
-#include "./Forces/ExplosionForceGenerator.h"
 
-
+#include "./FireWorkParticleGenerator.h"
+#include "./Forces/ForceRegistry.h"
 
 class ParticleSystem
 {
@@ -20,30 +16,39 @@ public:
 	ParticleGenerator* getParticleGenerator(std::string name);
 	void addParticleGenerator(ParticleGenerator* pGenerator);
 
-	std::list<Particle*> getParticles() { return mParticles; };
+	ForceRegistry* getForceRegistry() { return fRegistry; };
 
-	
+	void addParticle(Particle* p) { mParticles.push_back(p); };
+
+
 	// Fireworks
-	// void generateFireworkSytem();
+	void planetExplosion(physx::PxVec3& iniPos, physx::PxVec3& iniVel, float& iniScale);
+
+	void ParticleSystem::InitTornados();
+
+	// Test
+	void addCubeToTornado(Particle* c) {
+		c->setAffectedByTornado(true);
+
+		for(auto t : mTornados)
+			fRegistry->AddRegistry(t, c);
+	}
 
 private:
-
-	// Creación de particulas
-	int mNumParticles;
-	int mMeanParticles;
-	float mVarParts;
-
 	// Particles
 	std::list<Particle*> mParticles;
 	std::list<ParticleGenerator*> mParticleGenerators;
 
-	bool RemoveParticle(int id);
+	// List that associates particles with generators
+	std::list<std::pair<Particle*, ParticleGenerator*>> mTornadoParticles;
 
-	GravityForceGenerator* gForceGenerator = nullptr;
-	ParticleDragGenerator* dForceGenerator = nullptr;
-	WindForceGenerator* wForceGenerator = nullptr;
-	TorbellinoForceGenerator* tForceGenerator = nullptr;
-	ExplosionForceGenerator* eForceGenerator = nullptr;
+	FireWorkParticleGenerator* fw = nullptr;
+
+	std::list<TorbellinoForceGenerator*> mTornados;
+	//TorbellinoForceGenerator* tForce = nullptr;
+
+	ForceRegistry* fRegistry = nullptr;
+	
 
 };
 

@@ -19,13 +19,13 @@
 
 using namespace std;
 
-typedef unordered_multimap<ForceGenerator*, Particle*> mapFR;
+typedef unordered_multimap<ForceGenerator*, Particle*> mapFP;
 
-class ForceRegistry : public mapFR
+class ForceRegistry : public mapFP
 {
 public:
 	void Integrate(double dt);
-	mapFR::iterator AddRegistry(ForceGenerator* fg, Particle* p);
+	mapFP::iterator AddRegistry(ForceGenerator* fg, Particle* p);
 
 	void DeleteParticle(Particle* p);
 	void DeleteForce(ForceGenerator* fg);

@@ -13,6 +13,12 @@ ParticleSystem::ParticleSystem()
 	// torbellino y explosion
 	//tForceGenerator = new TorbellinoForceGenerator(physx::PxVec3(30, -20, 30), 5, 20);
 	// eForceGenerator = new ExplosionForceGenerator(physx::PxVec3(30, 50, 30), 50, 70, 0, 100, 2000);
+
+	fw = new FireWorkParticleGenerator();
+	fRegistry = new ForceRegistry();
+
+	
+	
 }
 
 ParticleSystem::~ParticleSystem() {
@@ -21,18 +27,45 @@ ParticleSystem::~ParticleSystem() {
 
 	for (auto g : mParticleGenerators)
 		delete g;
+
+	for (auto p : mTornadoParticles)
+		delete p.first;
+
+	for (auto t : mTornados)
+		delete t;
+
+	delete fw;
+	fw = nullptr;
+
+	mParticles.clear();
+	mParticleGenerators.clear();
+	mTornadoParticles.clear();
+	mTornados.clear();
+	fRegistry->clear();
+}
+
+void ParticleSystem::InitTornados() {
+	for (auto g : mParticleGenerators) {
+		if (g->getName() == "FUENTE") { // Afectados por torbellino
+			TorbellinoForceGenerator* tForce = new TorbellinoForceGenerator(g->getStdPos(), 50, 30);
+			mTornados.push_back(tForce);
+		}
+	}
 }
 
 void ParticleSystem::Integrate(double t)
 {
-	static int contador = 0;
 	for (auto g : mParticleGenerators) {
 		std::list<Particle*> test = g->generateParticles();
 		for (auto i : test) {
-			mParticles.push_back(i);
+			if (g->getName() == "FUENTE") { // Afectados por torbellino
+				for(auto t : mTornados)
+					fRegistry->AddRegistry(t, i);
 
-			// contador++;
-			// std::cout << "contador: " << contador << "\n";
+				mTornadoParticles.push_back(std::pair<Particle*, ParticleGenerator*>(i, g));
+			}
+			else
+				mParticles.push_back(i);
 		}
 			
 	}
@@ -43,23 +76,14 @@ void ParticleSystem::Integrate(double t)
 	{
 		if (!(*it)->isAlive()) {
 			delete *it;
+			*it = nullptr;
 			it = mParticles.erase(it);
 		}
 		else {
-			if (gForceGenerator != nullptr)
-				gForceGenerator->updateForce(*it, t);
-
-			if (dForceGenerator != nullptr)
-				dForceGenerator->updateForce(*it, t);
-
-			if (wForceGenerator != nullptr)
-				wForceGenerator->updateForce(*it, t);
-
-			if (tForceGenerator != nullptr)
-				tForceGenerator->updateForce(*it, t);
-
-			if (eForceGenerator != nullptr)
-				eForceGenerator->updateForce(*it, t);
+			if ((*it)->isFirework()) {
+				float newScale = (*it)->getScale() - (1.3 * t * (*it)->getIniScale());
+				(*it)->setScale(newScale);
+			}
 
 			(*it)->integrate(t);
 
@@ -67,9 +91,46 @@ void ParticleSystem::Integrate(double t)
 		}
 			
 	}
+
+	std::list<std::pair<Particle*, ParticleGenerator*>>::iterator it2 = mTornadoParticles.begin();
+
+	// std::cout << mTornadoParticles.size() << std::endl;
+
+	// std::cout << mTornadoParticles.size() << std::endl;
+	while (it2 != mTornadoParticles.end())
+	{
+		if (!(*it2).first->isAlive()) {
+			(*it2).second->subCont();
+
+			fRegistry->DeleteParticle((*it2).first);
+
+			delete (*it2).first;
+			(*it2).first = nullptr;
+			it2 = mTornadoParticles.erase(it2);
+		}
+		else {
+			(*it2).first->integrate(t);
+			it2++;
+		}
+	}
+
+	if (fRegistry != nullptr)
+		fRegistry->Integrate(t);
 }
 
 void ParticleSystem::addParticleGenerator(ParticleGenerator* pGenerator)
 {
 	mParticleGenerators.push_back(pGenerator);
+}
+
+void ParticleSystem::planetExplosion(physx::PxVec3& iniPos, physx::PxVec3& iniVel, float& iniScale)
+{
+	if (fw != nullptr) {
+		std::list<Particle*> exp;
+		exp = fw->planetExplosion(iniPos, iniVel, iniScale);
+
+		for (auto it : exp) // Añadimos a particles
+			mParticles.push_back(it);
+	}
+		
 }

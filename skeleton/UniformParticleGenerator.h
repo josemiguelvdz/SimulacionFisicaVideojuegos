@@ -8,6 +8,10 @@ public:
 	UniformParticleGenerator(physx::PxVec3 pos, physx::PxVec3 vel);
 	virtual std::list<Particle*> generateParticles();
 
+	virtual physx::PxVec3 getStdPos() { return mPos; };
+
+	// void addCont() { cont++; }
+
 private:
 	std::uniform_real_distribution<double> d;
 
@@ -15,4 +19,6 @@ private:
 
 	random_device rand;
 	default_random_engine generator = default_random_engine(rand());
+
+	
 };

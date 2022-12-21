@@ -8,14 +8,19 @@ using namespace std;
 
 class FireWorkParticleGenerator {
 public:
+	FireWorkParticleGenerator();
 	FireWorkParticleGenerator(physx::PxVec3 stdDevPos, physx::PxVec3 stdDevVel);
 	~FireWorkParticleGenerator();
 
-	void createFireWorkParticle(Particle* p);
+	//void createFireWorkParticle(Particle* p);
 
-	void integrate(double t);
+	//void integrate(double t);
 
-	void explode(Particle* parent);
+	//void explode(Particle* parent);
+
+	std::list<Particle*> planetExplosion(physx::PxVec3& iniPos, physx::PxVec3& iniVel, float& iniScale);
+
+	// std::list<Particle*> getParticles() { return mParticles; };
 
 protected:
 

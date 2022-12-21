@@ -8,7 +8,7 @@ void ForceRegistry::Integrate(double dt)
 		it->first->updateForce(it->second, dt);
 }
 
-mapFR::iterator ForceRegistry::AddRegistry(ForceGenerator* fg, Particle* p)
+mapFP::iterator ForceRegistry::AddRegistry(ForceGenerator* fg, Particle* p)
 {
 	return insert({ fg, p });
 }

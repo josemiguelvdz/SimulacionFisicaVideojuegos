@@ -16,10 +16,14 @@ Particle::Particle(physx::PxVec3 pos, physx::PxVec3 vel, physx::PxVec3 acc, doub
 	mColor = color;
 
 	mTransform = physx::PxTransform(pos.x, pos.y, pos.z);
-	mShape = CreateShape(physx::PxSphereGeometry(scale));
+
+	mIniScale = mScale = scale;
+
+	mShape = CreateShape(physx::PxSphereGeometry(mScale));
 	mRenderItem = new RenderItem(mShape, &mTransform, mColor);
 
-	mMaxLifeTime = clock() + lifeTime;
+	mCurrLifeTime = 0;
+	mMaxLifeTime = lifeTime;
 
 	mAlive = true;
 	mStaticParticle = staticParticle;
@@ -63,11 +67,16 @@ Particle::Particle(Particle* p)
 
 	mColor = p->mColor;
 
+	mIniScale = p->mIniScale;
+	mScale = p->mScale;
+
 	mTransform = physx::PxTransform(mPos);
 	mShape = p->mShape;
 	mRenderItem = new RenderItem(mShape, &mTransform, mColor);
 
-	mMaxLifeTime = clock() + p->mMaxLifeTime;
+	mMaxLifeTime = p->mMaxLifeTime;
+	mCurrLifeTime = 0;
+
 	mAlive = true;
 	mStaticParticle = p->mStaticParticle;
 
@@ -77,6 +86,10 @@ Particle::Particle(Particle* p)
 Particle::~Particle()
 {
 	DeregisterRenderItem(mRenderItem);
+
+	delete mRenderItem;
+	mRenderItem = nullptr;
+
 	// mShape->release();
 
 	// delete mShape;
@@ -104,7 +117,9 @@ void Particle::integrate(float t)
 	mVelocity *= powf(mDamping, t);
 
 	// Life Time
-	mCurrLifeTime = clock();
+	mCurrLifeTime += t;
+
+	// std::cout << mCurrLifeTime << std::endl;
 
 	if (!mStaticParticle && mCurrLifeTime > mMaxLifeTime)
 		mAlive = false;
@@ -166,6 +181,8 @@ Particle* Particle::setShape(physx::PxShape* shape)
 
 Particle* Particle::setLifeTime(float lifeTime)
 {
+	mStaticParticle = false;
+
 	mCurrLifeTime = clock();
 	mMaxLifeTime = mCurrLifeTime + lifeTime;
 	return this;
@@ -195,10 +212,15 @@ Particle* Particle::setColor(physx::PxVec4 color)
 	return this;
 }
 
-//Particle* Particle::setScale(float scale)
-//{
-//	mScale
-//	mRenderItem->color = color;
-//	return this;
-//}
+Particle* Particle::setScale(float scale)
+{	
+	if (scale < 0.01)
+		scale = 0.01;
+
+	mScale = scale;
+
+	physx::PxShape* newShape = CreateShape(physx::PxSphereGeometry(mScale));
+	mRenderItem->shape = newShape;
+	return this;
+}
 

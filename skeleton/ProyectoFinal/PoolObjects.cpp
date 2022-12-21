@@ -14,6 +14,8 @@ void PoolObjects::Update(double t)
 	// Mirar si murieron
 	checkIfDead();
 
+	// Test explosion particulas
+
 	// Actualizar los rigids
 	mForceRegistry->Integrate(t);
 
@@ -62,12 +64,40 @@ void PoolObjects::deleteRenderItem(PxRigidDynamic* p)
 			it++;
 }
 
+RenderItem* PoolObjects::getRenderItem(PxRigidDynamic* p)
+{
+	for (auto it = mRenderItemsMap.begin(); it != mRenderItemsMap.end();) {
+		if (it->first == p)
+			return it->second;
+		it++;
+	}
+
+	return nullptr;
+}
+
+PxRigidDynamic* PoolObjects::getSun()
+{
+	for (auto it = mRenderItemsMap.begin(); it != mRenderItemsMap.end();) {
+		if (it->first != nullptr && it->first->getName() == "Sun")
+			return it->first;
+		it++;
+	}
+	return nullptr;
+}
+
 void PoolObjects::addLifeTime(double t) {
 	for (auto it = mRenderItemsMap.begin(); it != mRenderItemsMap.end();) {
 		if (it->first != nullptr)
 			((RigidInfo*)it->first->userData)->actLifeTime += t;
 		it++;
 	}
+}
+
+void PoolObjects::explode(PxVec3 iniPos)
+{
+	// generar un firework en la posicion inicial
+	
+
 }
 
 void PoolObjects::checkIfDead()

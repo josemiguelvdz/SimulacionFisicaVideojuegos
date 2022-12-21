@@ -8,6 +8,8 @@ public:
 	SpaceParticleGenerator(physx::PxVec3 stdDevPos, physx::PxVec3 stdDevVel);
 	virtual std::list<Particle*> generateParticles() override;
 
+	virtual physx::PxVec3 getStdPos() { return pStdDevPos; };
+
 protected:
 	physx::PxVec3 pStdDevPos, pStdDevVel;
 
@@ -19,7 +21,4 @@ protected:
 
 	random_device rand;
 	default_random_engine generator = default_random_engine(rand());
-
-	int cont = 0;
-	int pLimit = 300;
 };

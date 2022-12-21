@@ -5,6 +5,7 @@ struct RigidInfo {
     int pStatus;
     double actLifeTime;
     double maxLifeTime;
+    float scale;
 };
 
 enum RigidStatus
