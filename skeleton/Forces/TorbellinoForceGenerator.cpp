@@ -14,7 +14,7 @@ void TorbellinoForceGenerator::updateForce(Particle* particle, double t)
 		if (fabs(particle->getIMass()) < 1e-10 || !isInsideRange(particle))
 			return;
 
-		physx::PxVec3 torVel = torbellinoVel(particle->getPos(), particle->getVel(), t);
+		physx::PxVec3 torVel = torbellinoVel(particle->getPos());
 
 		if (particle->isAffectedByTornado())
 			torVel.y = 10;
@@ -26,7 +26,7 @@ void TorbellinoForceGenerator::updateForce(Particle* particle, double t)
 	}
 }
 
-physx::PxVec3 TorbellinoForceGenerator::torbellinoVel(physx::PxVec3 pos, physx::PxVec3 pVel, double t) {
+physx::PxVec3 TorbellinoForceGenerator::torbellinoVel(physx::PxVec3 pos) {
 
 	physx::PxVec3 vel = pos - mCenter;
 	vel = vel.cross(physx::PxVec3(0, 1, 0)) + 5 * -vel;

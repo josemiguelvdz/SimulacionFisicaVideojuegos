@@ -146,15 +146,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 			if (sun != nullptr)
 				sun->setMass(sun->getMass() - 20);
 		}
-		if (key == 'c') // Generar Cubo en Tornado
+		if (key == 'c' && mSM->getID() >= 2) // Generar Cubo en Tornado
 			mSM->generateCube();
-		if (key == 'r') // Generar Solido Rigido en Torbellino hacia abajo
-			mSM->generateCube();
-
-		/*if (key == 'q') 
-			mSM->DeativateTorbellino();
-		if (key == 't')
-			mSM->ActivateTorbellino();*/
+		if (key == 'r' && mSM->getID() >= 2) // Generar Solido Rigido en Torbellino hacia abajo
+			mSM->generateRandomRigid();
 	}
 }
 

@@ -4,10 +4,13 @@
 #include "RigidForceGenerator.h"
 
 #include <math.h>
+#include <list>
 #include <climits>
 #include <unordered_map>;
 
 #include "RigidTorbellinoFGenerator.h"
+#include "RigidWindFGenerator.h"
+#include "RigidBuoyancyFGenerator.h"
 #include "../ProyectoFinal/GravityField.h"
 
 using namespace physx;
@@ -22,5 +25,11 @@ public:
 
 	void DeleteParticle(PxRigidDynamic* p);
 	void DeleteForce(RigidForceGenerator* fg);
+
+	void addForceToData(RigidForceGenerator* f) { mAllForcesRigids.push_back(f); }
+	std::vector<RigidForceGenerator*> getAllForces() { return mAllForcesRigids; };
+
+private:
+	std::vector<RigidForceGenerator*> mAllForcesRigids;
 };
 

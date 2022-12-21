@@ -29,5 +29,11 @@ public:
 
 	void DeleteParticle(Particle* p);
 	void DeleteForce(ForceGenerator* fg);
+
+	void addForceToData(ForceGenerator* f) { mAllForces.push_back(f); }
+	std::list<ForceGenerator*> getAllForces() { return mAllForces; };
+
+private:
+	std::list<ForceGenerator*> mAllForces;
 };
 

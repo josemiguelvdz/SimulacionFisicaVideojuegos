@@ -37,9 +37,10 @@ public:
 
 	int getID() { return mID; };
 
+	void generateWaterPlanet();
 	void generateTornados(physx::PxVec3 tornadoPos, int sentido);
-
 	void generateCube();
+	void generateRandomRigid();
 
 private:
 	// Scene
@@ -62,7 +63,9 @@ private:
 	WindForceGenerator* w = nullptr;
 	BuoyancyForceGenerator* b = nullptr;
 
-
-	int rigidCont = 0;
+	// Escena agua rigidos
+	RigidWindFGenerator* wRigids = nullptr;
+	RigidBuoyancyFGenerator* bRigids = nullptr;
+	RigidTorbellinoFGenerator* tRigids = nullptr;
 };
 

@@ -39,6 +39,7 @@ public:
 private:
 	mapRenderItems mRenderItemsMap;
 	RigidForceRegistry* mForceRegistry = nullptr;
+	
 	PxScene* mActiveScene = nullptr;
 };
 

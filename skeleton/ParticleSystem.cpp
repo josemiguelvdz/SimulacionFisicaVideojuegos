@@ -37,11 +37,15 @@ ParticleSystem::~ParticleSystem() {
 	delete fw;
 	fw = nullptr;
 
+	for (auto f : fRegistry->getAllForces())
+		delete f;
+
 	mParticles.clear();
 	mParticleGenerators.clear();
 	mTornadoParticles.clear();
 	mTornados.clear();
 	fRegistry->clear();
+	fRegistry->getAllForces().clear();
 }
 
 void ParticleSystem::InitTornados() {

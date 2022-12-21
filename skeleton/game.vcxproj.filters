@@ -34,6 +34,8 @@
     <ClCompile Include="Rigid\RigidForceRegistry.cpp" />
     <ClCompile Include="ProyectoFinal\GravityField.cpp" />
     <ClCompile Include="ProyectoFinal\PoolObjects.cpp" />
+    <ClCompile Include="Rigid\RigidWindFGenerator.cpp" />
+    <ClCompile Include="Rigid\RigidBuoyancyFGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -73,6 +75,8 @@
     <ClInclude Include="ProyectoFinal\PoolObjects.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ProyectoFinal\RigidInfo.h" />
+    <ClInclude Include="Rigid\RigidWindFGenerator.h" />
+    <ClInclude Include="Rigid\RigidBuoyancyFGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

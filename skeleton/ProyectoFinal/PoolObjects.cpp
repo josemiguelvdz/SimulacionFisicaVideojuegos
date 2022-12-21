@@ -34,11 +34,6 @@ void PoolObjects::clearScene()
 
 	mRenderItemsMap.clear();
 
-	for (auto it = mForceRegistry->begin(); it != mForceRegistry->end();) { // Borro el renderItem
-		delete it->first;
-		it++;
-	}
-		
 	mForceRegistry->clear();
 
 	if(mActiveScene != nullptr)

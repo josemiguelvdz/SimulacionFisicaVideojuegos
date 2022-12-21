@@ -276,9 +276,11 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="Rigid\RigidBuoyancyFGenerator.cpp" />
     <ClCompile Include="Rigid\RigidForceRegistry.cpp" />
     <ClCompile Include="Rigid\RigidParticleGenerator.cpp" />
     <ClCompile Include="Rigid\RigidTorbellinoFGenerator.cpp" />
+    <ClCompile Include="Rigid\RigidWindFGenerator.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpaceParticleGenerator.cpp" />
     <ClCompile Include="UniformParticleGenerator.cpp" />
@@ -310,10 +312,12 @@
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Rigid\RigidBuoyancyFGenerator.h" />
     <ClInclude Include="Rigid\RigidForceGenerator.h" />
     <ClInclude Include="Rigid\RigidForceRegistry.h" />
     <ClInclude Include="Rigid\RigidParticleGenerator.h" />
     <ClInclude Include="Rigid\RigidTorbellinoFGenerator.h" />
+    <ClInclude Include="Rigid\RigidWindFGenerator.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpaceParticleGenerator.h" />
     <ClInclude Include="UniformParticleGenerator.h" />

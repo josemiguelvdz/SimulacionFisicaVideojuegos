@@ -17,6 +17,6 @@ protected:
 	bool isInsideRange(Particle* p);
 
 	physx::PxVec3 torbellinoPow(physx::PxVec3 v, double e) { return physx::PxVec3(pow(v.x, e), pow(v.y, e), pow(v.z, e)); };
-	physx::PxVec3 torbellinoVel(physx::PxVec3 pos, physx::PxVec3 pVel, double t);
+	physx::PxVec3 torbellinoVel(physx::PxVec3 pos);
 };
 

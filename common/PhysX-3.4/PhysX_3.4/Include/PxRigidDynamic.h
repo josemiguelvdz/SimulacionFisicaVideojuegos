@@ -84,6 +84,11 @@ class PxRigidDynamic : public PxRigidBody
 {
 public:
 	// Runtime modifications
+	int mWindFriction = 1;
+	int mWindFriction2 = 0;
+
+	void setWindFriction(int wind) { mWindFriction = wind; };
+	void setWindFriction2(int wind2) { mWindFriction2 = wind2; };
 
 
 /************************************************************************************************/
