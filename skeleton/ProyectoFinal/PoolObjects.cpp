@@ -80,6 +80,16 @@ PxRigidDynamic* PoolObjects::getSun()
 	return nullptr;
 }
 
+PxRigidDynamic* PoolObjects::getEarth()
+{
+	for (auto it = mRenderItemsMap.begin(); it != mRenderItemsMap.end();) {
+		if (it->first != nullptr && it->first->getName() == "Earth")
+			return it->first;
+		it++;
+	}
+	return nullptr;
+}
+
 void PoolObjects::addLifeTime(double t) {
 	for (auto it = mRenderItemsMap.begin(); it != mRenderItemsMap.end();) {
 		if (it->first != nullptr)

@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include <iostream>
 
 Scene::Scene(PxDefaultCpuDispatcher* dispatcher, PxPhysics* physics, Camera* camera)
 {
@@ -29,6 +30,10 @@ void Scene::LoadScene(int newID)
 		delete pSystem;
 		pSystem = nullptr;
 	}
+
+	// Bools
+	mZoomActivated = false;
+	mGoToCamera = false;
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
 	PxSceneDesc sceneDesc(gPhysics->getTolerancesScale());
@@ -67,6 +72,8 @@ void Scene::LoadScene(int newID)
 		earth->setAngularDamping(0);
 		earth->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		earth->setMass(10);
+
+		earth->setName("Earth");
 
 		earth->setLinearDamping(0);
 
@@ -176,6 +183,8 @@ void Scene::LoadScene(int newID)
 		earth->setAngularDamping(0);
 		earth->setAngularVelocity({ 0, -2 * 3.14, 0 });
 		earth->setMass(10);
+
+		earth->setName("Earth");
 
 		earth->setLinearDamping(0);
 
@@ -289,6 +298,31 @@ void Scene::Update(double t)
 	// Particles
 	if (pSystem != nullptr)
 		pSystem->Integrate(t);
+
+	if (mZoomActivated) { // Hacer zoom
+		// Aumentar Escala
+		PxRigidDynamic* earth = pPoolObjects->getEarth();
+		if (earth != nullptr) {
+			if (!mGoToCamera) {
+				PxTransform newPos(lerp(earth->getGlobalPose().p, { 0, 20, 0 }, t), earth->getGlobalPose().q);
+				earth->setGlobalPose(newPos);
+			}
+
+			if (PxVec3{ 0, 20, 0 }.y - earth->getGlobalPose().p.y < PxVec3{0, 0.5, 0}.y)
+				mGoToCamera = true;
+
+			if (mGoToCamera) {
+				PxTransform newPos(lerp(earth->getGlobalPose().p, GetCamera()->getTransform().p, t), earth->getGlobalPose().q);
+				earth->setGlobalPose(newPos);
+
+				if (GetCamera()->getTransform().p.y - earth->getGlobalPose().p.y < PxVec3{ 0, 1, 0 }.y) {
+					// Cargar nueva escena
+					LoadScene(2);
+				}
+					
+			}
+		}
+	}
 }
 
 physx::PxRigidStatic* Scene::createRigidStatic(const physx::PxVec3& pos, PxMaterial* material, const PxGeometry& geo, const PxVec4& color)
@@ -523,5 +557,13 @@ void Scene::generateRandomRigid()
 	pPoolObjects->getForceRegistry()->AddRegistry(tRigids, randomRigid);
 
 	// pSystem->addCubeToTornado(cube);
+}
+
+void Scene::ZoomToEarth()
+{
+	// Meter un zoom a la tierra
+	mZoomActivated = true;
+	pPoolObjects->clearForcesInAllRigids();
+	
 }
 

@@ -41,6 +41,15 @@ public:
 	void generateTornados(physx::PxVec3 tornadoPos, int sentido);
 	void generateCube();
 	void generateRandomRigid();
+	void ZoomToEarth();
+
+	/* Lerp Member Function
+	Calculates the lerp for the vector and vector supplied using unit interval t */
+	physx::PxVec3 lerp(const physx::PxVec3& s, const physx::PxVec3& e, float t) {
+		return physx::PxVec3(s.x + (e.x - s.x) * t,
+			s.y + (e.y - s.y) * t,
+			s.z + (e.z - s.z) * t);
+	}
 
 private:
 	// Scene
@@ -67,5 +76,9 @@ private:
 	RigidWindFGenerator* wRigids = nullptr;
 	RigidBuoyancyFGenerator* bRigids = nullptr;
 	RigidTorbellinoFGenerator* tRigids = nullptr;
+
+	// Zoom
+	bool mZoomActivated = false;
+	bool mGoToCamera = false;
 };
 

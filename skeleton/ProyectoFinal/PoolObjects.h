@@ -28,6 +28,7 @@ public:
 	RigidForceRegistry* getForceRegistry() { return mForceRegistry; };
 
 	PxRigidDynamic* getSun();
+	PxRigidDynamic* getEarth();
 
 
 	void setActiveScene(PxScene* scene) { mActiveScene = scene; }
@@ -35,6 +36,16 @@ public:
 	void checkIfDead();
 	void addLifeTime(double t);
 	void explode(PxVec3 iniPos);
+
+	void clearForcesInAllRigids() { 
+		for (auto it : mRenderItemsMap) {
+			it.first->setLinearVelocity({0, 0, 0});
+			it.first->clearForce();
+			// it.first.set
+		}
+			
+		mForceRegistry->clear();
+	};
 	
 private:
 	mapRenderItems mRenderItemsMap;
