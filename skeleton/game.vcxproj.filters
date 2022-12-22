@@ -30,12 +30,12 @@
     <ClCompile Include="Forces\ForceRegistry.cpp" />
     <ClCompile Include="Forces\BuoyancyForceGenerator.cpp" />
     <ClCompile Include="Rigid\RigidParticleGenerator.cpp" />
-    <ClCompile Include="Rigid\RigidTorbellinoFGenerator.cpp" />
+    <ClCompile Include="ProyectoFinal\RigidTorbellinoFGenerator.cpp" />
     <ClCompile Include="Rigid\RigidForceRegistry.cpp" />
     <ClCompile Include="ProyectoFinal\GravityField.cpp" />
     <ClCompile Include="ProyectoFinal\PoolObjects.cpp" />
-    <ClCompile Include="Rigid\RigidWindFGenerator.cpp" />
-    <ClCompile Include="Rigid\RigidBuoyancyFGenerator.cpp" />
+    <ClCompile Include="ProyectoFinal\RigidWindFGenerator.cpp" />
+    <ClCompile Include="ProyectoFinal\RigidBuoyancyFGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -68,15 +68,15 @@
     <ClInclude Include="Forces\ForceRegistry.h" />
     <ClInclude Include="Forces\BuoyancyForceGenerator.h" />
     <ClInclude Include="Rigid\RigidParticleGenerator.h" />
-    <ClInclude Include="Rigid\RigidTorbellinoFGenerator.h" />
+    <ClInclude Include="ProyectoFinal\RigidTorbellinoFGenerator.h" />
     <ClInclude Include="Rigid\RigidForceRegistry.h" />
     <ClInclude Include="Rigid\RigidForceGenerator.h" />
     <ClInclude Include="ProyectoFinal\GravityField.h" />
     <ClInclude Include="ProyectoFinal\PoolObjects.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ProyectoFinal\RigidInfo.h" />
-    <ClInclude Include="Rigid\RigidWindFGenerator.h" />
-    <ClInclude Include="Rigid\RigidBuoyancyFGenerator.h" />
+    <ClInclude Include="ProyectoFinal\RigidWindFGenerator.h" />
+    <ClInclude Include="ProyectoFinal\RigidBuoyancyFGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

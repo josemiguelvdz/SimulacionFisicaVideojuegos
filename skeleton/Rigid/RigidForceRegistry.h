@@ -8,9 +8,9 @@
 #include <climits>
 #include <unordered_map>;
 
-#include "RigidTorbellinoFGenerator.h"
-#include "RigidWindFGenerator.h"
-#include "RigidBuoyancyFGenerator.h"
+#include "../ProyectoFinal/RigidTorbellinoFGenerator.h"
+#include "../ProyectoFinal/RigidWindFGenerator.h"
+#include "../ProyectoFinal/RigidBuoyancyFGenerator.h"
 #include "../ProyectoFinal/GravityField.h"
 
 using namespace physx;
