@@ -2,7 +2,7 @@
 #include "PxPhysicsAPI.h"
 #include "foundation/PxTransform.h"
 
-#include "RigidForceGenerator.h"
+#include "../Rigid/RigidForceGenerator.h"
 
 #include <math.h>
 
